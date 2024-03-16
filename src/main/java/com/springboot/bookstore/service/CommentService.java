@@ -6,7 +6,7 @@ import com.springboot.bookstore.entity.Comment;
 
 public interface CommentService {
 
-	List<Comment> getAllComments();
+	List<Comment> getAllCommentByIdProduct(int id_product);
 	
 	Comment saveComment(Comment Comment);
 	
