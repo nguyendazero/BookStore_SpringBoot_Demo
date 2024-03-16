@@ -2,10 +2,13 @@ package com.springboot.bookstore.service.impl;
 
 import java.util.List;
 
+import org.springframework.stereotype.Service;
+
 import com.springboot.bookstore.entity.Product;
 import com.springboot.bookstore.repository.ProductRepository;
 import com.springboot.bookstore.service.ProductService;
 
+@Service 
 public class ProductServiceImpl implements ProductService{
 
 	private ProductRepository productRepository;

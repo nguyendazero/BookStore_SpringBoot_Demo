@@ -2,10 +2,13 @@ package com.springboot.bookstore.service.impl;
 
 import java.util.List;
 
+import org.springframework.stereotype.Service;
+
 import com.springboot.bookstore.entity.User;
 import com.springboot.bookstore.repository.UserRepository;
 import com.springboot.bookstore.service.UserService;
 
+@Service 
 public class UserServiceImpl implements UserService{
 
 	private UserRepository userRepository;
