@@ -70,16 +70,22 @@ header nav ul li {
 
 	
 		<header>
-	        <div class="container"> <!-- Add container for header content -->
-	            <h1>Header</h1>
-	            <nav>
-	                <ul>
-	                    <li><a th:href="@{/home}">Home</a></li>
-	                    <li><a href="#">Contact</a></li>
-	                </ul>
-	            </nav>
-	        </div>
-	    </header>
+		    <div class="container">
+		        <h1>Header</h1>
+		        <nav>
+		            <ul>
+		                <li><a th:href="@{/home}">Home</a></li>
+		                <li><a href="#">Contact</a></li>
+		                <li th:if="${session.userLogin != null}">
+		                    <a th:href="@{/logout}">Đăng xuất</a>
+		                </li>
+		                <li th:unless="${session.userLogin != null}" class="btn btn-success">
+		                    <a th:href="@{/login}">Đăng nhập</a>
+		                </li>
+		            </ul>
+		        </nav>
+		    </div>
+		</header>
 	
 	<div class="container d">
 		

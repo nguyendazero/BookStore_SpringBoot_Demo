@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <style>
+
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    color: #333333;
+    font-weight: bold;
+    text-align: left; /* Căn trái cho nhãn */
+}
+
+input[type="text"],
+input[type="password"],
+input[type="email"],
+input[type="date"],
+input[type="text"] {
+    width: 100%; /* Chiều rộng của trường nhập là 100% */
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #cccccc;
+    border-radius: 4px;
+}
+
+input[type="submit"] {
+    width: 100%;
+    background-color: #4caf50;
+    color: white;
+    padding: 10px 0;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+input[type="submit"]:hover {
+    background-color: #45a049;
+}
+
+
+
+	</style>
+</head>
+<body style="max-width: 50%;
+    padding-left: 250px;">	
+
+    <h2>Register</h2>
+    <!-- Hiển thị thông báo lỗi nếu có -->
+    <p th:if="${error}" style="color: red;" th:text="${error}"></p>
+    <form th:action="@{/register}" th:object = "${user}" method="POST">
+        <label for="username">Username:</label><br>
+        <input type="text" id="username" name="username"><br>
+        
+        <label for="password">Password:</label><br>
+        <input type="password" id="password" name="password"><br><br>
+        
+        <label for="address">Địa chỉ:</label><br>
+        <input type="text" id="address" name="address"><br>
+        
+        <label for="date_of_birth">Ngày sinh:</label><br>
+        <input type="date" id="date_of_birth" name="date_of_birth"><br>
+        
+        <label for="gender">Giới tính:</label><br>
+        <input type="text" id="gender" name="gender"><br>
+        
+        <label for="email">Email:</label><br>
+        <input type="email" id="email" name="email"><br>
+        
+        <label for="full_name">Họ và Tên:</label><br>
+        <input type="text" id="full_name" name="full_name"><br>
+        
+        <label for="telephone">Số điện thoại:</label><br>
+        <input type="text" id="telephone" name="telephone"><br>
+        
+        <input type="submit" value="Đăng ký">
+        
+    </form>
+</body>
+</html>

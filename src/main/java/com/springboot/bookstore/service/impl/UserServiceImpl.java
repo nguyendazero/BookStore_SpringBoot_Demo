@@ -43,5 +43,10 @@ public class UserServiceImpl implements UserService{
 		userRepository.deleteById(id);
 		
 	}
+
+	@Override
+	public User getUserByUsernameAndPass(String userName, String password) {
+		return userRepository.findByUserNameAndPassword(userName, password);
+	}
 	
 }
