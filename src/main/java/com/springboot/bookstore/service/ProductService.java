@@ -18,4 +18,6 @@ public interface ProductService {
 
 	List<Product> getAllProductsByIdCategory(int category);
 	
+	Product incLikes(int id);
+	
 }

@@ -42,6 +42,14 @@ public class Comment {
 		this.date = date;
 	}
 	
+	public Comment(User idUser, Product idProduct, String content, Date date) {
+		super();
+		this.idUser = idUser;
+		this.idProduct = idProduct;
+		this.content = content;
+		this.date = date;
+	}
+	
 	public Comment() {
 		
 	}

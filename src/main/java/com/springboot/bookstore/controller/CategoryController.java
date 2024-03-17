@@ -3,6 +3,7 @@ package com.springboot.bookstore.controller;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,14 +17,10 @@ import com.springboot.bookstore.service.ProductService;
 @Controller
 public class CategoryController {
 
+	@Autowired
     private CategoryService categoryService;
+	@Autowired
     private ProductService productService;
-
-    public CategoryController(CategoryService categoryService, ProductService productService) {
-		super();
-		this.categoryService = categoryService;
-		this.productService = productService;
-	}
 
 	@GetMapping("/categories/{id}")
 	public String getProductBycategory(@PathVariable int id, Model model) {

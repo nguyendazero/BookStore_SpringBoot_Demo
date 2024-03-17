@@ -33,10 +33,8 @@ public class UserController {
 	    User user = userService.getUserByUsernameAndPass(username, password);
 	    if (user != null) {
 	        session.setAttribute("userLogin", user);
-	        System.out.println(user.toString());
 	        return "redirect:/home"; 
 	    } else {
-	        System.out.println("lỗi");
 	        model.addAttribute("error", "Tên người dùng hoặc mật khẩu không đúng!");
 	        return "login";
 	    }
@@ -59,7 +57,7 @@ public class UserController {
             @RequestParam("telephone") String telephone, Model model) {
 		
 		User newUser = new User(username, password, fullName, gender, address, dateOfBirth, telephone, email, 0);
-		userService.updateUser(newUser);
+		userService.saveUser(newUser);
 		model.addAttribute("error", "đã đăng ký thành công, hãy đăng nhập");
 		return "login";
 	}

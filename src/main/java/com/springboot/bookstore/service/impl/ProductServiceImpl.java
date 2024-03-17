@@ -49,4 +49,12 @@ public class ProductServiceImpl implements ProductService{
 		return productRepository.findAllByCategoryId(category);
 	}
 
+	@Override
+	public Product incLikes(int id) {
+		Product p = productRepository.findById(id).get();
+		p.setLikes(p.getLikes()+1);
+		return productRepository.findById(id).get();
+	}
+
+
 }

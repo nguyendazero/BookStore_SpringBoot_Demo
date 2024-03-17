@@ -62,6 +62,45 @@ header nav ul li {
 	margin-top: 150px;
 }
 
+.comment-section {
+    margin-top: 50px;
+}
+
+.comment-form textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    resize: vertical;
+    margin-bottom: 10px;
+}
+
+.comment-form button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.comment-list .comment-item {
+    border-bottom: 1px solid #ccc;
+    padding: 15px 0;
+}
+
+.comment-list .comment-item h6 {
+    color: #007bff;
+    margin-bottom: 5px;
+}
+
+.comment-list .comment-item p {
+    margin-bottom: 10px;
+}
+
+.comment-list .comment-item .btn {
+    margin-right: 10px;
+}
 
 </style>
 </head>
@@ -113,16 +152,50 @@ header nav ul li {
                     </div>
                     <p class="product-description" th:text="${product.description}"></p>
                     <h4 class="price">Giá: <span style="color: red" th:text="${product.priceSelling}"></span></h4>
-                    <!--
+                   
+                   	
                     <div class="action">
-                        <a th:href="@{'add-to-cart?id=' + ${detail.id}}" class="add-to-cart btn btn-default" type="button"><i class="fas fa-cart-plus"></i>Thêm vào giỏ hàng</a>
-                        <a th:href="@{'inc-tym?id=' + ${detail.id}}"> <button class="like btn btn-default" type="button"><span class="fa fa-heart"></span></button></a>
+                        <a th:href="@{/add-to-cart/{id} (id=${product.id})}" class="add-to-cart btn btn-default" type="button"><i class="fas fa-cart-plus"></i>Thêm vào giỏ hàng</a>
+                        <a th:href="@{/inc-likes/{id} (id=${product.id})}"> <button class="like btn btn-default" type="button"><span class="fa fa-heart"></span></button></a>
                     </div>
-                    -->
+                   
                 </div>
             </div>
         </div>
 	</div>
+	
+	<!-- Phần bình luận -->
+    <div class="comment-section">
+        <h3 class="text-center">Bình luận</h3>
+ 
+		<p style="color: red;" th:unless="${session.userLogin != null}">Bạn chưa đăng nhập</p>
+
+        <!-- Form để người dùng nhập bình luận -->
+        
+        <div class="comment-form">
+            <form th:action="@{/add-comment/{id} (id=${product.id})}" method="post">
+                <textarea name="comment" placeholder="Nhập bình luận của bạn"></textarea>
+                <button type="submit">Gửi</button>
+            </form>
+        </div>
+        
+        
+        <!-- Danh sách các bình luận đã được thêm -->
+        <div class="comment-list">
+		    <div th:each="comment : ${comments}" class="comment-item">
+		        
+		        <!-- Hiển thị thông tin người bình luận và thời gian bình luận -->
+		        <h6><strong th:text="${comment.idUser.fullName}" style="color: red;"></strong></h6>
+		        <p th:text="${comment.content}"></p>
+		        <p><span th:text="${comment.date}"></span></p>
+		        <!-- Nút chỉnh sửa -->
+		        <a th:href="@{/edit-comment/{id} (id=${comment.id})}" class="btn btn-info btn-sm">Chỉnh sửa</a>
+		        <!-- Nút xóa -->
+		        <a th:href="@{/delete-comment/{id} (id=${comment.id})}" class="btn btn-danger btn-sm">Xóa</a>
+		    </div>
+		</div>
+
+    </div>
        
 </body>
 </html>
