@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Trang Chủ</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 <style>
     /* Reset CSS */
 * {
@@ -144,6 +145,41 @@ footer p {
     margin: 0;
 }
 
+/* CSS cho phần danh mục */
+/* CSS cho phần danh mục */
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between; /* Căn các phần tử đều nhau trên hàng */
+}
+
+.row .col-md-2 {
+    width: calc(20% - 20px); /* Đặt chiều rộng của mỗi cột */
+    margin-bottom: 20px;
+    background-color: #f9f9f9;
+    padding: 10px;
+    text-align: center;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.row .col-md-2:hover {
+    transform: translateY(-5px);
+}
+
+.row .col-md-2 ul {
+    list-style: none; /* Loại bỏ dấu chấm */
+    padding: 0;
+}
+
+.row .col-md-2 ul li {
+    margin-bottom: 10px; /* Thêm khoảng cách giữa các mục */
+}
+
+
+
+
 </style>
 </head>
 <body>
@@ -153,8 +189,7 @@ footer p {
 	            <h1>Header</h1>
 	            <nav>
 	                <ul>
-	                    <li><a href="#">Home</a></li>
-	                    <li><a href="#">Thể loại</a></li>
+	                    <li><a th:href="@{/home}">Home</a></li>
 	                    <li><a href="#">Contact</a></li>
 	                </ul>
 	            </nav>
@@ -162,18 +197,29 @@ footer p {
 	    </header>
 
     <div class="container">
+  
         <section class="banner">
             <img src="https://lh3.googleusercontent.com/_bzDd-BwRPpJkASL2n-XI9nT2kqI-rExKm0zRx2Njs2mjtyvFADmmrEmLYhztkpIYvhrrsrXAq9uZ9-avVGD35BHnkSi8lq9u5sef9HwY1BRmdpf31FCtt5S_Ht0Ta7JMgEmQHNlBCSgADmmiN2I9qfAFYzazq35bAhv68jgMaInssWZB9rDhh-19VlCe7LrvimuYNgACyuD4MhMTNSj1HbfAgQnalV2BqYAm5YEebPDr3jNCAt3InnMTxZciXBIL4COjQRvrQ5S3oUEUNftmdAEt1TVbW3ohQaHo5VAMrEuKcA6vXkUojhYFLHGYsjNvK9O_QzTtk45TJc5pX-aLAyibEFmCo5rk4GlVVmeQXADMPF_avMD0dTNS6iK2QagmQMr3elbeO0EFA-xI857DRq8vEYoGGky1rPRh-zKiTgjEcncHLrgGZBz7uyOF840fUcXUQoQLgWB2ipNwGfU0Ep6alIlFRRZKW5MWb4Cwk2CAfXGvohGQaS6XfZvGMC_0aaABhhL_nfobH5UVapUq2S9-tG1VjyMHDuyy5GHGQb-3YHxqgGSaZxfWACG0B6un6xCso01I8UaEhORcelwM8GyjEqnGcE-nwjv9SBOmehLn7jiWLD6=w1200-h559-no">
         </section>
+
+			<div class="row">
+		        <div th:each="category : ${categories}" class="col-md-2">
+		            <ul>
+		                <li><a th:href="@{/categories/{id}(id=${category.id})}" th:text="${category.name}"></a></li>
+		            </ul>
+		        </div>
+		    </div>	
 
         <section class="featured-books">
             <h2>Featured Books</h2>
             <div class="book-list">
 				
                 <div th:each="product : ${products}" class="book">
-                    <img th:src="@{/img/product/{image}(image=${product.image})}" alt="Book 1">
-                    <h3 th:text = "${product.productName}"></h3>
-                    <h3 style="color: green;">Tác giả: <span th:text = "${product.author.fullName}"></span></h3>
+                    <a th:href="@{/product/{productId}(productId=${product.id})}">
+					    <img th:src="@{/img/product/{image}(image=${product.image})}" alt="Book 1">
+					</a>
+                    <h4 th:text = "${product.productName}"></h4>
+                    <h5 style="color: green;">Tác giả: <span th:text = "${product.author.fullName}"></span></h5>
                     <p style="color: gray;">Giá: <span th:text = "${product.priceSelling}"></span></p>
                    	
                     <a href="#" class="btn">Add to Cart</a>
