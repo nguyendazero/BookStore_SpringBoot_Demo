@@ -186,11 +186,16 @@ footer p {
     <!-- Content -->
 	    <header>
 		    <div class="container">
-		        <h1>Header</h1>
+				
+		        <form class="search-form" action="/search" method="GET">
+		          <input type="text" name="search" placeholder="Tìm kiếm...">
+		          <button type="submit">Tìm kiếm</button>
+		        </form>
+		        
 		        <nav>
 		            <ul>
 		                <li><a th:href="@{/home}">Home</a></li>
-		                <li><a href="#">Contact</a></li>
+		                <li><a href="#">Đơn hàng</a></li>
 		                <li th:if="${session.userLogin != null}">
 		                    <a th:href="@{/logout}">Đăng xuất</a>
 		                </li>

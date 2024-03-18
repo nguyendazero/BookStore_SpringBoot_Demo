@@ -186,7 +186,12 @@ footer p {
     <!-- Content -->
 	    <header>
 		    <div class="container">
-		        <h1>Header</h1>
+				
+		        <form class="search-form" action="/search" method="GET">
+		          <input type="text" name="search" placeholder="Tìm kiếm...">
+		          <button type="submit">Tìm kiếm</button>
+		        </form>
+		        
 		        <nav>
 		            <ul>
 		                <li><a th:href="@{/home}">Home</a></li>
@@ -201,6 +206,7 @@ footer p {
 		        </nav>
 		    </div>
 		</header>
+
 
     <div class="container">
   

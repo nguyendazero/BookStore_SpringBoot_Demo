@@ -1,6 +1,8 @@
 package com.springboot.bookstore.controller;
 
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +19,8 @@ import jakarta.servlet.http.HttpSession;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 @Controller
 public class ProductController {
@@ -49,4 +53,18 @@ public class ProductController {
 		
 		return "redirect:/product/" + id;
 	}
+	
+	@GetMapping("/search")
+	public String search(@RequestParam("search") String search, Model model) {
+		List<Product> products = productService.getAllProducts();
+		List<Product> searchResult = productService.searchProducts(search, products);
+		try {
+			search = URLEncoder.encode(search, "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+		session.setAttribute("searchResult", searchResult);
+		return "redirect:/home/search/"+search;
+	}
+	
 }

@@ -1,5 +1,6 @@
 package com.springboot.bookstore.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -54,6 +55,18 @@ public class ProductServiceImpl implements ProductService{
 		Product p = productRepository.findById(id).get();
 		p.setLikes(p.getLikes()+1);
 		return productRepository.findById(id).get();
+	}
+
+	@Override
+	public List<Product> searchProducts(String search, List<Product> p) {
+		List<Product> searchResults = new ArrayList<>();
+		for (Product product : p) {
+			if(product.getProductName().toLowerCase().contains(search.toLowerCase())){
+				System.out.println(product.toString());
+				searchResults.add(product);			
+			}
+		}
+		return searchResults;
 	}
 
 

@@ -37,9 +37,11 @@ public class CommentController {
 		LocalDate currentDate = LocalDate.now();
 		Date currentDateAsDate = Date.valueOf(currentDate);
 		if(userLogin != null) {
-			Product p = productService.getProductById(id);
-			Comment c = new Comment(userLogin, p, comment, currentDateAsDate);
-			commentService.saveComment(c);			
+			if(comment != "") {
+				Product p = productService.getProductById(id);
+				Comment c = new Comment(userLogin, p, comment, currentDateAsDate);
+				commentService.saveComment(c);
+			}
 		}
 		return "redirect:/product/" + id;
 	}

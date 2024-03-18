@@ -20,4 +20,6 @@ public interface ProductService {
 	
 	Product incLikes(int id);
 	
+	List<Product> searchProducts(String search, List<Product> p);
+	
 }
