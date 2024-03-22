@@ -41,7 +41,11 @@ public class CommentController {
 				Product p = productService.getProductById(id);
 				Comment c = new Comment(userLogin, p, comment, currentDateAsDate);
 				commentService.saveComment(c);
+			}else {
+				session.setAttribute("error", "Bạn chưa nhập nội dung!");
 			}
+		}else {
+			session.setAttribute("errorLogin", "Bạn chưa đăng nhập!");
 		}
 		return "redirect:/product/" + id;
 	}
@@ -56,9 +60,11 @@ public class CommentController {
 				productId = comment.getIdProduct().getId();
 				commentService.deleteComment(id);
 			}else {
+				session.setAttribute("error", "Bạn không thể xóa bình luận của người khác");
 				return "redirect:/product/" + comment.getIdProduct().getId();
 			}
 		}else {
+			session.setAttribute("errorLogin", "Bạn chưa đăng nhập!");
 			return "redirect:/product/" + comment.getIdProduct().getId();
 		}
 		return "redirect:/product/" + productId;

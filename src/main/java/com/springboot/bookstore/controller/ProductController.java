@@ -36,6 +36,12 @@ public class ProductController {
 	public String productDetail(@PathVariable int id, Model model) {
 		Product p = productService.getProductById(id);
 		List<Comment> comments = commentService.getAllCommentByIdProduct(id);
+		String error = (String) session.getAttribute("error");
+		String errorLogin = (String) session.getAttribute("errorLogin");
+		session.setAttribute("error", null);
+		session.setAttribute("errorLogin", null);
+		model.addAttribute("error", error);
+		model.addAttribute("errorLogin", errorLogin);
 		model.addAttribute("product", p);
 		model.addAttribute("comments", comments);
 		return "product_detail";
@@ -48,6 +54,7 @@ public class ProductController {
 			Product p = productService.incLikes(id);
 			productService.updateProduct(p);
 		}else {
+			session.setAttribute("errorLogin", "Bạn chưa đăng nhập!");
 			return "redirect:/product/" + id;
 		}
 		
@@ -63,6 +70,7 @@ public class ProductController {
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		}
+		model.addAttribute("title", "Kết quả tìm kiếm");
 		session.setAttribute("searchResult", searchResult);
 		return "redirect:/home/search/"+search;
 	}

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Đổi Mật Khẩu</title>
+</head>
+<body>
+    <h2>Đổi Mật Khẩu</h2>
+    <form th:action="@{/change-password}" method="post">
+		
+		<label for="password">Mật khẩu cũ:</label><br>
+        <input type="password" id="password" name="password" required><br>
+		
+        <label for="newPassword">Mật khẩu mới:</label><br>
+        <input type="password" id="newPassword" name="newPassword" required><br>
+
+        <label for="confirmPassword">Xác nhận mật khẩu:</label><br>
+        <input type="password" id="confirmPassword" name="confirmPassword" required><br><br>
+
+        <input type="submit" value="Đổi Mật Khẩu">
+        
+        <h3 th:if="${error}" style="color: red;" th:text="${error}"></h3>
+        
+        
+  
+                    <a th:href="@{/login}"><h2>Quay lại trang đăng nhập</h2></a>
+
+    </form>
+</body>
+</html>

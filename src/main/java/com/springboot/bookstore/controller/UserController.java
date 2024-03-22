@@ -68,4 +68,57 @@ public class UserController {
 		return "redirect:/home";
 	}
 	
+	@GetMapping("/repass/{id}")
+	public String rePass() {
+		return "re_pass";
+	}
+	
+	@PostMapping("/change-password")
+	public String changePass(@RequestParam("password") String password,
+							@RequestParam("newPassword") String newPassword,
+							@RequestParam("confirmPassword") String confirmPassword,
+							Model model) {
+		User user = (User) session.getAttribute("userLogin");
+		if(user.getPassword().equalsIgnoreCase(password)) {
+			if(newPassword.equalsIgnoreCase(confirmPassword)) {
+				if(!user.getPassword().equalsIgnoreCase(newPassword)) {
+					user.setPassword(newPassword);
+					userService.updateUser(user);
+					model.addAttribute("error", "đã đổi mật khẩu thành công");
+				}else {
+					model.addAttribute("error", "mật khẩu mới không được trùng với mật khẩu cũ!");
+				}
+			}else {
+				model.addAttribute("error", "mật khẩu nhập lại không khớp!");
+			}
+		}else {
+			model.addAttribute("error", "mật khẩu cũ chưa đúng!");
+		}
+		return "re_pass";
+	}
+	
+	@GetMapping("/edit-infor/{id}")
+	public String editInfor() {
+		return "edit_infor";
+	}
+	
+	@PostMapping("/update-user")
+	public String UpdateUser(@RequestParam("fullName") String fullName,
+							@RequestParam("gender") String gender,
+							@RequestParam("address") String address,
+							@RequestParam("dateOfBirth") Date dateOfBirth,
+							@RequestParam("telephone") String telephone,
+							@RequestParam("email") String email,
+							Model model) {
+		User user = (User) session.getAttribute("userLogin");
+		user.setFullName(fullName);
+		user.setGender(gender);
+		user.setAddress(address);
+		user.setDateOfBirth(dateOfBirth);
+		user.setTelephone(telephone);
+		user.setEmail(email);
+		userService.updateUser(user);
+		model.addAttribute("error", "thay đổi thông tin thành công");
+		return "edit_infor";
+	}
 }

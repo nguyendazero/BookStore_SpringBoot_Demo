@@ -185,27 +185,37 @@ footer p {
 <body>
     <!-- Content -->
 	    <header>
-		    <div class="container">
-				
-		        <form class="search-form" action="/search" method="GET">
-		          <input type="text" name="search" placeholder="Tìm kiếm...">
-		          <button type="submit">Tìm kiếm</button>
-		        </form>
-		        
-		        <nav>
-		            <ul>
-		                <li><a th:href="@{/home}">Home</a></li>
-		                <li><a href="#">Đơn hàng</a></li>
-		                <li th:if="${session.userLogin != null}">
-		                    <a th:href="@{/logout}">Đăng xuất</a>
-		                </li>
-		                <li th:unless="${session.userLogin != null}" class="btn btn-success">
-		                    <a th:href="@{/login}">Đăng nhập</a>
-		                </li>
-		            </ul>
-		        </nav>
-		    </div>
-		</header>
+    <div class="container">
+        <form class="search-form" action="/search" method="GET">
+            <input type="text" name="search" placeholder="Tìm kiếm...">
+            <button type="submit">Tìm kiếm</button>
+        </form>
+        
+        <nav>
+            <ul>
+                <li><a th:href="@{/home}">Home</a></li>
+                <li th:if="${session.userLogin != null}">
+                    <a href="#">Đơn hàng</a>
+                </li>
+                
+                <li th:unless="${session.userLogin != null}" class="btn btn-success">
+                    <a th:href="@{/login}">Đăng nhập</a>
+                </li>
+                <!-- Thêm các mục khi người dùng đã đăng nhập -->
+                <li th:if="${session.userLogin != null}">
+                    <a th:href="@{/edit-infor/{id} (id=${session.userLogin.id})}">Thay đổi thông tin</a>
+                </li>
+                <li th:if="${session.userLogin != null}">
+				    <a th:href="@{/repass/{id}(id=${session.userLogin.id})}">Đổi mật khẩu</a>
+				</li>
+
+                <li th:if="${session.userLogin != null}">
+                    <a th:href="@{/logout}">Đăng xuất</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</header>
 
 
     <div class="container">
@@ -223,7 +233,8 @@ footer p {
 		    </div>	
 
         <section class="featured-books">
-            <h2>Featured Books</h2>
+            <h2 th:text="${title} ? ${title} : 'Sản phẩm'"></h2>
+
             <div class="book-list">
 				
                 <div th:each="product : ${products}" class="book">
@@ -234,7 +245,7 @@ footer p {
                     <h5 style="color: green;">Tác giả: <span th:text = "${product.author.fullName}"></span></h5>
                     <p style="color: gray;">Giá: <span th:text = "${product.priceSelling}"></span></p>
                    	
-                    <a href="#" class="btn">Add to Cart</a>
+                    <a href="#" class="btn">Thêm vào giỏ hàng</a>
                 </div>
               
             </div>

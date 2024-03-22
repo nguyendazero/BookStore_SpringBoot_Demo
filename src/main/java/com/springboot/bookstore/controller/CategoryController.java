@@ -28,7 +28,7 @@ public class CategoryController {
 		List<Category> categories = categoryService.getAllCategorys();
 		model.addAttribute("products", p);
 		model.addAttribute("categories", categories);
-		return "category";
+		return "home";
 	}
     
 }
