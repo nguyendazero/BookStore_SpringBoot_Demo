@@ -1,7 +1,9 @@
 package com.springboot.bookstore.service.impl;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
@@ -68,6 +70,39 @@ public class ProductServiceImpl implements ProductService{
 		}
 		return searchResults;
 	}
+
+	@Override
+	public List<Product> getProductsGiamGia() {
+	    List<Product> p = productRepository.findAll();
+	    List<Product> pGiamGia = new ArrayList<>();
+	    for (Product product : p) {
+	        if (product.getStatus().equalsIgnoreCase("giảm giá")) { 
+	            pGiamGia.add(product);
+	        }
+	    }
+	    return pGiamGia;
+	}
+
+	@Override
+	public List<Product> getProductsHetHang() {
+		List<Product> p = productRepository.findAll();
+	    List<Product> pHetHang = new ArrayList<>();
+	    for (Product product : p) {
+	        if (product.getStatus().equalsIgnoreCase("hết hàng")) { 
+	        	pHetHang.add(product);
+	        }
+	    }
+	    return pHetHang;
+	}
+
+	@Override
+	public List<Product> getProductsHot() {
+		List<Product> products = productRepository.findAllByOrderByLikesDesc();
+		List<Product> topProducts = products.stream().limit(4).collect(Collectors.toList());
+
+        return topProducts;
+	}
+
 
 
 }

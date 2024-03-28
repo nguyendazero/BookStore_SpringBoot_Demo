@@ -1,6 +1,7 @@
 package com.springboot.bookstore.controller;
 
 import java.sql.Date;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -56,9 +57,20 @@ public class UserController {
             @RequestParam("full_name") String fullName,
             @RequestParam("telephone") String telephone, Model model) {
 		
-		User newUser = new User(username, password, fullName, gender, address, dateOfBirth, telephone, email, 0);
-		userService.saveUser(newUser);
-		model.addAttribute("error", "đã đăng ký thành công, hãy đăng nhập");
+		List<User> users = userService.getAllUsers();
+		boolean tonTai = false;
+		for (User user : users) {
+			if(username.equalsIgnoreCase(user.getUserName())) {
+				model.addAttribute("error", "tên đăng nhập đã tồn tại");
+				tonTai = true;
+				return "register";
+			}
+		}
+		if(tonTai != true) {
+			User newUser = new User(username, password, fullName, gender, address, dateOfBirth, telephone, email, 0);
+			userService.saveUser(newUser);
+			model.addAttribute("error", "đã đăng ký thành công, hãy đăng nhập");
+		}
 		return "login";
 	}
 	

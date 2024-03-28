@@ -10,4 +10,6 @@ public interface ProductRepository extends JpaRepository<Product, Integer>{
 
 	List<Product> findAllByCategoryId(int category);
 
+	List<Product> findAllByOrderByLikesDesc();
+
 }

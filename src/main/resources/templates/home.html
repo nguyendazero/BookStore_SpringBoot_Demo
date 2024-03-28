@@ -231,6 +231,25 @@ footer p {
 		            </ul>
 		        </div>
 		    </div>	
+		    
+		    <div class="row">
+			    <div class="col-md-2">
+			        <ul>
+			            <li><a th:href="@{/status/giam-gia}" th:text="'Giảm giá'"></a></li>
+			        </ul>
+			    </div>
+			    <div class="col-md-2">
+			        <ul>
+						<li><a th:href="@{/status/het-hang}" th:text="'Hết hàng'"></a></li>
+			        </ul>
+			    </div>
+			    <div class="col-md-2">
+			        <ul>
+						<li><a th:href="@{/status/hot}" th:text="'Sản phẩm hot'"></a></li>
+			        </ul>
+			    </div>
+			</div>
+
 
         <section class="featured-books">
             <h2 th:text="${title} ? ${title} : 'Sản phẩm'"></h2>

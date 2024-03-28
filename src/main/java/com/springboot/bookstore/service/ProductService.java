@@ -22,4 +22,10 @@ public interface ProductService {
 	
 	List<Product> searchProducts(String search, List<Product> p);
 	
+	List<Product> getProductsGiamGia();
+	
+	List<Product> getProductsHetHang();
+	
+	List<Product> getProductsHot();
+	
 }
