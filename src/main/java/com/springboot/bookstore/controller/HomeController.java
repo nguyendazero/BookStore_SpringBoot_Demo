@@ -34,6 +34,15 @@ public class HomeController {
 		return "home";
 	};
 	
+	@GetMapping("/home-admin")
+	public String homeAdmin(Model model) {
+		List<Product> products = productService.getAllProducts();
+		List<Category> categories = categoryService.getAllCategorys();
+		model.addAttribute("products", products);
+		model.addAttribute("categories", categories);
+		return "home_admin";
+	};
+	
 	@GetMapping("/home/search/{search}")
 	public String homeSearch(Model model) {
 		List<Product> searchResult = (List<Product>) session.getAttribute("searchResult");

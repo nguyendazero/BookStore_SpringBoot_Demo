@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Quản Lý Danh Mục</title>
+    <style>
+        /* CSS cho giao diện */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+            color: #333;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        tr:hover {
+            background-color: #ddd;
+        }
+
+        form {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input[type="text"] {
+            width: 200px;
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            box-sizing: border-box;
+        }
+
+        button[type="submit"] {
+            padding: 8px 20px;
+            background-color: #333;
+            color: #fff;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #555;
+        }
+        
+        nav {
+            background-color: #444;
+            color: #fff;
+            padding: 10px;
+        }
+
+        nav ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        nav ul li {
+            display: inline;
+            margin-right: 20px;
+        }
+
+        nav ul li a {
+            color: #fff;
+            text-decoration: none;
+        }
+        nav ul li a:hover {
+    background-color: #555;
+}
+    </style>
+</head>
+<body>
+<nav>
+    <ul>
+		<li><a th:href="@{/home-admin}">Home</a></li>
+        <li><a th:href="@{/manager-users}">Tài khoản</a></li>
+        <li><a th:href="@{/manager-products}">Sản phẩm</a></li>
+        <li><a th:href="@{/manager-categories}">Thể loại</a></li>
+        <li><a th:href="@{/manager-authors}">Tác giả</a></li>
+        <li><a th:href="@{/manager-orders}">Đơn hàng</a></li>
+        <li><a th:href="@{/logout}">Đăng xuất</a></li>
+    </ul>
+</nav>
+<h1>Quản Lý Danh Mục</h1>
+<h2>Thêm Thể Loại Mới</h2>
+
+<form th:action="@{/categories/add}" method="post">
+    <label>Tên Thể Loại: <input type="text" name="name"></label><br>
+    <button type="submit">Thêm Danh Mục</button>
+</form>
+
+
+<table>
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Tên thể loại</th>
+            <th>XÓa</th>
+            <th>Sửa</th>
+        </tr>
+    </thead>
+    <tbody>
+        <!-- Thay đổi phần này để lặp qua danh sách danh mục từ backend -->
+        <tr th:each="category : ${categories}">
+            <td th:text="${category.id}"></td>
+            <td th:text="${category.name}"></td>
+            <td>
+                <form th:action="@{/categories/delete/{id} (id=${category.id}) }" method="get">
+                    <input type="hidden" name="categoryId" th:value="${category.id}">
+                    <button type="submit">Xóa</button>
+                </form>
+            </td>
+            <td>
+			    <form th:action="@{/categories/edit/{id} (id=${category.id}) }" method="get">
+					<input type="hidden" name="categoryId" th:value="${category.id}">
+			        <input type="text" name="categoryName" th:value="${category.name}">
+			        <button type="submit">Chỉnh sửa</button>
+			    </form>
+			</td>
+			
+        </tr>
+    </tbody>
+</table>
+
+
+
+</body>
+</html>

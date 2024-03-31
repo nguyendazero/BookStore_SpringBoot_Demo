@@ -33,8 +33,13 @@ public class UserController {
 	public String checkLogin(@RequestParam("username") String username, @RequestParam("password") String password, Model model) {
 	    User user = userService.getUserByUsernameAndPass(username, password);
 	    if (user != null) {
-	        session.setAttribute("userLogin", user);
-	        return "redirect:/home"; 
+	    	if(user.getRole() != 1) {
+	    		session.setAttribute("userLogin", user);
+		        return "redirect:/home"; 
+	    	}else {
+	    		session.setAttribute("userLogin", user);
+	    		return "redirect:/home-admin"; 
+	    	} 
 	    } else {
 	        model.addAttribute("error", "Tên người dùng hoặc mật khẩu không đúng!");
 	        return "login";
@@ -132,5 +137,18 @@ public class UserController {
 		userService.updateUser(user);
 		model.addAttribute("error", "thay đổi thông tin thành công");
 		return "edit_infor";
+	}
+	
+	@GetMapping("/manager-users")
+	public String managerUsers(Model model) {
+		List<User> users = userService.getAllUsers();
+		model.addAttribute("users", users);
+		return "manager_users";
+	}
+	
+	@GetMapping("/users/delete/{id}")
+	public String deleteUser(@RequestParam("userId") int userId) {
+		userService.deleteUser(userId);
+		return "redirect:/manager-users";
 	}
 }

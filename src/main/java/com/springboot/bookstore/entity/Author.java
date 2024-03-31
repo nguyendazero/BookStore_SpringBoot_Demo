@@ -42,6 +42,15 @@ public class Author {
 		this.story = story;
 		this.image = image;
 	}
+	
+	public Author( String fullName, String homeTown, Date dateOfBirth, String story, String image) {
+		super();
+		this.fullName = fullName;
+		this.homeTown = homeTown;
+		this.dateOfBirth = dateOfBirth;
+		this.story = story;
+		this.image = image;
+	}
 
 	
 	public Author() {

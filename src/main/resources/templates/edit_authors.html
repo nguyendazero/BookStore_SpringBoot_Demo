@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Chỉnh sửa Tác giả</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        h2 {
+            color: #333;
+        }
+
+        form {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        input[type="date"],
+        textarea {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            box-sizing: border-box;
+        }
+
+        textarea {
+            resize: vertical;
+        }
+
+        button[type="submit"] {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <h2>Chỉnh sửa Tác giả</h2>
+    
+    <form id="editForm" th:action="@{/authors/edit/{id}}" method="post">
+        <input type="hidden" id="authorId" th:value="${author.id}" name="authorId">
+        
+        <label for="fullName">Họ và Tên:</label>
+        <input type="text" id="fullName" th:value="${author.fullName}" name="fullName">
+        
+        <label for="homeTown">Quê quán:</label>
+        <input type="text" id="homeTown" th:value="${author.homeTown}" name="homeTown">
+        
+        <label for="dateOfBirth">Ngày sinh:</label>
+        <input type="date" id="dateOfBirth" th:value="${author.dateOfBirth}" name="date">
+        
+        <label for="story">Tiểu sử:</label>
+        <textarea id="story" name="story" rows="4" cols="50" th:text="${author.story}"></textarea>
+        
+        <label for="image">Hình ảnh:</label>
+        <input type="text" id="image" th:value="${author.image}" name="img">
+        
+        <button type="submit">Lưu</button>
+    </form>
+</body>
+</html>

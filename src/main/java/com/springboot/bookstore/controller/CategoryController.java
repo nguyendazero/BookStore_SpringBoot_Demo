@@ -13,6 +13,10 @@ import com.springboot.bookstore.entity.Category;
 import com.springboot.bookstore.entity.Product;
 import com.springboot.bookstore.service.CategoryService;
 import com.springboot.bookstore.service.ProductService;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 @Controller
 public class CategoryController {
@@ -30,6 +34,37 @@ public class CategoryController {
 		model.addAttribute("categories", categories);
 		return "home";
 	}
+	
+	@GetMapping("/manager-categories")
+	public String getAllCategory(Model model) {
+		List<Category> categories = categoryService.getAllCategorys();
+		model.addAttribute("categories", categories);
+		return "manager_categories";
+	}
+	
+	@PostMapping("/categories/add")
+	public String addCategory(@RequestParam("name") String name) {
+		Category c = new Category();
+		c.setName(name);
+		categoryService.saveCategory(c);
+		return "redirect:/manager-categories";
+	}
+	
+	@GetMapping("/categories/delete/{id}")
+	public String deleleCategory(@RequestParam("categoryId") int categoryId) {
+		categoryService.deleteCategory(categoryId);
+		return "redirect:/manager-categories";
+	}
     
+	@GetMapping("/categories/edit/{id}")
+	public String editCategory(
+				@RequestParam("categoryId") int categoryId,
+				@RequestParam("categoryName") String categoryName) {
+		Category c = categoryService.getCategoryById(categoryId);
+		c.setName(categoryName);
+		categoryService.updateCategory(c);
+		return "redirect:/manager-categories";
+	}
+	
 }
 

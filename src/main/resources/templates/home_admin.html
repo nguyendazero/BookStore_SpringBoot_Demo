@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Bookstore</title>
+    <style>
+        /* Reset CSS */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+        }
+
+        /* Header */
+        header {
+            background-color: #333;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+        }
+
+        /* Navigation */
+        nav {
+            background-color: #444;
+            color: #fff;
+            padding: 10px;
+        }
+
+        nav ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        nav ul li {
+            display: inline;
+            margin-right: 20px;
+        }
+
+        nav ul li a {
+            color: #fff;
+            text-decoration: none;
+        }
+
+        /* Main Content */
+        .container {
+            margin: 20px;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+        }
+
+        /* Footer */
+        footer {
+            background-color: #333;
+            color: #fff;
+            padding: 10px;
+            text-align: center;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+        
+        img{
+			max-width: 60%;
+		}
+		nav ul li a:hover {
+    background-color: #555;
+}
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Admin Bookstore</h1>
+</header>
+
+<nav>
+    <ul>
+		<li><a th:href="@{/home-admin}">Home</a></li>
+        <li><a th:href="@{/manager-users}">Tài khoản</a></li>
+        <li><a th:href="@{/manager-products}">Sản phẩm</a></li>
+        <li><a th:href="@{/manager-categories}">Thể loại</a></li>
+        <li><a th:href="@{/manager-authors}">Tác giả</a></li>
+        <li><a th:href="@{/manager-orders}">Đơn hàng</a></li>
+        <li><a th:href="@{/logout}">Đăng xuất</a></li>
+    </ul>
+</nav>
+
+<div class="container">
+    <h2>Dashboard</h2>
+    <img src="https://png.pngtree.com/background/20211216/original/pngtree-the-bookstore-in-the-bookstore-picture-image_1537885.jpg">
+</div>
+
+<footer>
+    <p>&copy; 2024 Admin Bookstore</p>
+</footer>
+
+</body>
+</html>
