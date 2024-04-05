@@ -10,7 +10,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.springboot.bookstore.entity.Cart;
 import com.springboot.bookstore.entity.User;
+import com.springboot.bookstore.service.CartService;
 import com.springboot.bookstore.service.UserService;
 
 import jakarta.servlet.http.HttpSession;
@@ -22,6 +24,8 @@ public class UserController {
     private HttpSession session;
 	@Autowired
 	private UserService userService;
+	@Autowired
+	private CartService cartService;
 
 	
 	@GetMapping("/login")
@@ -54,6 +58,7 @@ public class UserController {
 	
 	@PostMapping("/register")
 	public String checkRegister(@RequestParam("username") String username,
+			@RequestParam("repassword") String repassword,
             @RequestParam("password") String password,
             @RequestParam("address") String address,
             @RequestParam("date_of_birth") Date dateOfBirth,
@@ -62,6 +67,11 @@ public class UserController {
             @RequestParam("full_name") String fullName,
             @RequestParam("telephone") String telephone, Model model) {
 		
+		
+		if(!password.equalsIgnoreCase(repassword)) {
+			model.addAttribute("error", "mật khẩu nhập lại không khớp");
+			return "register";
+		}
 		List<User> users = userService.getAllUsers();
 		boolean tonTai = false;
 		for (User user : users) {
@@ -74,6 +84,8 @@ public class UserController {
 		if(tonTai != true) {
 			User newUser = new User(username, password, fullName, gender, address, dateOfBirth, telephone, email, 0);
 			userService.saveUser(newUser);
+			Cart c = new Cart(newUser);
+			cartService.saveCart(c);
 			model.addAttribute("error", "đã đăng ký thành công, hãy đăng nhập");
 		}
 		return "login";

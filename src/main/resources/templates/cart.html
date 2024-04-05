@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Giỏ hàng</title>
+    <style>
+		/* Reset CSS */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Body Styles */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    line-height: 1.6;
+}
+
+.container {
+    width: 80%;
+    margin: auto;
+    overflow: hidden;
+}
+
+header {
+    background: #333;
+    color: #fff;
+    padding: 10px 0;
+}
+
+header nav ul {
+    list-style: none;
+    float: right;
+}
+
+header nav ul li {
+    display: inline;
+    margin-left: 20px;
+}
+
+header nav ul li a {
+    color: #fff;
+    text-decoration: none;
+}
+
+/* Giỏ hàng Styles */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+}
+
+table th, table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+table th {
+    background-color: #333;
+    color: #fff;
+}
+
+tfoot td {
+    font-weight: bold;
+}
+
+.checkout-btn {
+    display: inline-block;
+    background: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 20px;
+}
+
+.checkout-btn:hover {
+    background: #45a049;
+}
+
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <form class="search-form" action="/search" method="GET">
+                <input type="text" name="search" placeholder="Tìm kiếm...">
+                <button type="submit">Tìm kiếm</button>
+            </form>
+            
+            <nav>
+                <ul>
+                    <li><a th:href="@{/home}">Home</a></li>
+                    <li th:if="${session.userLogin != null}">
+                        <a th:href="@{/cart/{id} (id=${session.userLogin.id}) }">Giỏ hàng</a>
+                    </li>
+                    <li th:if="${session.userLogin != null}">
+                        <a th:href="@{/orders/{id} (id=${session.userLogin.id}) }">Đơn hàng</a>
+                    </li>
+                    <li th:unless="${session.userLogin != null}" class="btn btn-success">
+                        <a th:href="@{/login}">Đăng nhập</a>
+                    </li>
+                    <!-- Thêm các mục khi người dùng đã đăng nhập -->
+                    <li th:if="${session.userLogin != null}">
+                        <a th:href="@{/edit-infor/{id} (id=${session.userLogin.id})}">Thay đổi thông tin</a>
+                    </li>
+                    <li th:if="${session.userLogin != null}">
+                        <a th:href="@{/repass/{id}(id=${session.userLogin.id})}">Đổi mật khẩu</a>
+                    </li>
+                    <li th:if="${session.userLogin != null}">
+                        <a th:href="@{/logout}">Đăng xuất</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Nội dung giỏ hàng -->
+    <div class="container">
+    <!-- Kiểm tra nếu cartItems là null hoặc rỗng -->
+    <h1 th:if="${cartItems == null or cartItems.isEmpty()}">Chưa có sản phẩm trong giỏ hàng</h1>
+    <!-- Nếu không, hiển thị nội dung giỏ hàng -->
+    <h1 th:if="${cartItems != null and not cartItems.isEmpty()}">Giỏ hàng của bạn</h1>
+    
+    <!-- Nếu có sản phẩm trong giỏ hàng, hiển thị bảng giỏ hàng -->
+    <table th:if="${cartItems != null and not cartItems.isEmpty()}">
+        <!-- Các dòng tiêu đề -->
+        <thead>
+            <tr>
+                <th>STT</th>
+                <th>Tên sản phẩm</th>
+                <th>Danh mục</th>
+                <th>Giá</th>
+                <th>Số lượng</th>
+                <th>Thành tiền</th>
+                <th>Hủy bỏ</th>
+            </tr>
+        </thead>
+        <!-- Dữ liệu sản phẩm trong giỏ hàng -->
+        <tbody>
+            <tr th:each="item, itemIndex : ${cartItems}">
+                <td th:text="${itemIndex.index + 1}"></td>
+                <td th:text="${item.product.productName}"></td>
+                <td th:text="${item.product.category.name}"></td>
+                <td th:text="${item.product.priceSelling}"></td>
+                <td>
+				    <form th:action="@{/updateQuantity/{itemId}(itemId=${item.id})}" method="post">
+		
+				        <button style="width: 20px;" type="submit" name="action" value="decrease">-</button>
+				     
+				        <span th:text="${item.quantity}"></span>
+				  
+				        <button style="width: 20px;" type="submit" name="action" value="increase">+</button>
+				    </form>
+				</td>
+
+                <td th:text="${item.quantity * item.product.priceSelling}"></td>
+                <td>
+                    <form th:action="@{/delete/{itemId}(itemId=${item.id})}" method="get">
+                        <button type="submit">Xóa</button>
+                    </form>
+                </td>
+            </tr>
+        </tbody>
+        <!-- Tính tổng tiền -->
+        <tfoot>
+            <tr>
+                <td colspan="0">Tổng tiền</td>
+                <td>
+                    <!-- Sử dụng biến sum để tính tổng -->
+                    <span style="color: red;" th:text="${#numbers.formatDecimal(sum, 0, 'COMMA', 0, 'POINT')}"></span>
+                </td>
+            </tr>
+        </tfoot>
+    </table>
+
+    <!-- Nút thanh toán -->
+    <a href="/checkout" class="checkout-btn">Thanh toán</a>
+</div>
+
+</body>
+</html>

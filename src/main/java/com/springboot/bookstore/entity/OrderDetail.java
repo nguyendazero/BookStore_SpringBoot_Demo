@@ -22,26 +22,12 @@ public class OrderDetail {
     @Column(name = "quantity")
     private int quantity;
 
-    @Column(name = "price")
-    private Double price;
-
-    @ManyToOne
-    @JoinColumn(name = "category_id")
-    private Category category;
-
-    @Column(name = "product_name")
-    private String productName;
-
-	public OrderDetail(OrderDetailId id, OrderEntity order, Product product, int quantity, Double price, Category category,
-			String productName) {
+	public OrderDetail(OrderDetailId id, OrderEntity order, Product product, int quantity) {
 		super();
 		this.id = id;
 		this.order = order;
 		this.product = product;
 		this.quantity = quantity;
-		this.price = price;
-		this.category = category;
-		this.productName = productName;
 	}
 
 	public OrderDetail() {
@@ -80,34 +66,12 @@ public class OrderDetail {
 		this.quantity = quantity;
 	}
 
-	public Double getPrice() {
-		return price;
-	}
 
-	public void setPrice(Double price) {
-		this.price = price;
-	}
-
-	public Category getCategory() {
-		return category;
-	}
-
-	public void setCategory(Category category) {
-		this.category = category;
-	}
-
-	public String getProductName() {
-		return productName;
-	}
-
-	public void setProductName(String productName) {
-		this.productName = productName;
-	}
 
 	@Override
 	public String toString() {
 		return "OrderDetail [id=" + id + ", order=" + order + ", product=" + product + ", quantity=" + quantity
-				+ ", price=" + price + ", category=" + category + ", productName=" + productName + "]";
+				 + "]";
 	}
 	
 	

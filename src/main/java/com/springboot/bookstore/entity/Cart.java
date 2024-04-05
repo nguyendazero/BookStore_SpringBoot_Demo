@@ -34,6 +34,11 @@ public class Cart {
 		this.user = user;
 		this.cartItems = cartItems;
 	}
+	
+	public Cart(User user) {
+		super();
+		this.user = user;
+	}
 
 	public Cart() {
 
