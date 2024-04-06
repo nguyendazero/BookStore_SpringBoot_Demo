@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import com.springboot.bookstore.entity.Category;
 import com.springboot.bookstore.entity.Product;
@@ -31,6 +30,10 @@ public class HomeController {
 		List<Category> categories = categoryService.getAllCategorys();
 		model.addAttribute("products", products);
 		model.addAttribute("categories", categories);
+		
+		String error = (String) session.getAttribute("error");
+		session.setAttribute("error", null);
+		model.addAttribute("error", error);
 		return "home";
 	};
 	

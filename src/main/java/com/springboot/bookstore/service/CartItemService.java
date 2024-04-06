@@ -14,4 +14,5 @@ public interface CartItemService {
 
 	CartItem getCartItemById(int itemId);
 
+	void removeAllCartItemsByIdCart(int id_cart);
 }

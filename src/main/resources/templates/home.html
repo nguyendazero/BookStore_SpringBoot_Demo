@@ -223,13 +223,19 @@ footer p {
 </header>
 
 
+
     <div class="container">
   		<!-- Hiển thị thông báo lỗi nếu có -->
-    	<p th:if="${errorMessage}" th:text="${errorMessage}"></p>
+	
         <section class="banner">
             <img src="https://lh3.googleusercontent.com/_bzDd-BwRPpJkASL2n-XI9nT2kqI-rExKm0zRx2Njs2mjtyvFADmmrEmLYhztkpIYvhrrsrXAq9uZ9-avVGD35BHnkSi8lq9u5sef9HwY1BRmdpf31FCtt5S_Ht0Ta7JMgEmQHNlBCSgADmmiN2I9qfAFYzazq35bAhv68jgMaInssWZB9rDhh-19VlCe7LrvimuYNgACyuD4MhMTNSj1HbfAgQnalV2BqYAm5YEebPDr3jNCAt3InnMTxZciXBIL4COjQRvrQ5S3oUEUNftmdAEt1TVbW3ohQaHo5VAMrEuKcA6vXkUojhYFLHGYsjNvK9O_QzTtk45TJc5pX-aLAyibEFmCo5rk4GlVVmeQXADMPF_avMD0dTNS6iK2QagmQMr3elbeO0EFA-xI857DRq8vEYoGGky1rPRh-zKiTgjEcncHLrgGZBz7uyOF840fUcXUQoQLgWB2ipNwGfU0Ep6alIlFRRZKW5MWb4Cwk2CAfXGvohGQaS6XfZvGMC_0aaABhhL_nfobH5UVapUq2S9-tG1VjyMHDuyy5GHGQb-3YHxqgGSaZxfWACG0B6un6xCso01I8UaEhORcelwM8GyjEqnGcE-nwjv9SBOmehLn7jiWLD6=w1200-h559-no">
         </section>
-
+		<div class="text-center" style="color: red; margin-bottom: 30px;">
+			<h2 th:if="${session.error != null}" th:text="${session.error}"></h2>
+			<h2 th:if="${error != null}" th:text="${error}"></h2>
+		</div>
+			
+		
 			<div class="row">
 		        <div th:each="category : ${categories}" class="col-md-2">
 		            <ul>
@@ -256,7 +262,8 @@ footer p {
 			    </div>
 			</div>
 
-
+		
+		
         <section class="featured-books">
             <h2 th:text="${title} ? ${title} : 'Sản phẩm'"></h2>
 

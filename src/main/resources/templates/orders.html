@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Danh sách đơn hàng</title>
+<style>
+		/* Reset CSS */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Body Styles */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    line-height: 1.6;
+}
+
+.container {
+    width: 80%;
+    margin: auto;
+    overflow: hidden;
+}
+
+header {
+    background: #333;
+    color: #fff;
+    padding: 10px 0;
+}
+
+header nav ul {
+    list-style: none;
+    float: right;
+}
+
+header nav ul li {
+    display: inline;
+    margin-left: 20px;
+}
+
+header nav ul li a {
+    color: #fff;
+    text-decoration: none;
+}
+
+/* Giỏ hàng Styles */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+}
+
+table th, table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+table th {
+    background-color: #333;
+    color: #fff;
+}
+</style>
+
+</head>
+<body>
+     <!-- Header -->
+    <header>
+        <div class="container">
+            <form class="search-form" action="/search" method="GET">
+                <input type="text" name="search" placeholder="Tìm kiếm...">
+                <button type="submit">Tìm kiếm</button>
+            </form>
+            
+            <nav>
+                <ul>
+                    <li><a th:href="@{/home}">Home</a></li>
+                    <li th:if="${session.userLogin != null}">
+                        <a th:href="@{/cart/{id} (id=${session.userLogin.id}) }">Giỏ hàng</a>
+                    </li>
+                    <li th:if="${session.userLogin != null}">
+                        <a th:href="@{/orders/{id} (id=${session.userLogin.id}) }">Đơn hàng</a>
+                    </li>
+                    <li th:unless="${session.userLogin != null}" class="btn btn-success">
+                        <a th:href="@{/login}">Đăng nhập</a>
+                    </li>
+                    <!-- Thêm các mục khi người dùng đã đăng nhập -->
+                    <li th:if="${session.userLogin != null}">
+                        <a th:href="@{/edit-infor/{id} (id=${session.userLogin.id})}">Thay đổi thông tin</a>
+                    </li>
+                    <li th:if="${session.userLogin != null}">
+                        <a th:href="@{/repass/{id}(id=${session.userLogin.id})}">Đổi mật khẩu</a>
+                    </li>
+                    <li th:if="${session.userLogin != null}">
+                        <a th:href="@{/logout}">Đăng xuất</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Content -->
+    <div class="container">
+        <h1>Danh sách đơn hàng</h1>
+        <table>
+            <thead>
+                <tr>
+                    <th>Mã đơn hàng</th>
+                    <th>Ngày đặt hàng</th>
+                    <th>Tổng giá trị</th>
+                    <th>Trạng thái</th>
+                    <th>Hủy bỏ</th>
+                    <!-- Thêm các cột khác nếu cần -->
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Duyệt qua danh sách các đơn hàng -->
+                <tr th:each="order : ${orders}">
+                    <td th:text="${order.id}">Mã đơn hàng</td>
+                    <td th:text="${order.date}">Ngày đặt hàng</td>
+                    <td th:text="${order.total}">Tổng giá trị</td>
+                    <td>Đã hoàn thành</td>
+                    <td>
+	                    <form th:action="@{/delete/{orderId}(orderId=${order.id})}" method="get">
+	                        <button type="submit">Xóa</button>
+	                    </form>
+                	</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+</body>
+</html>

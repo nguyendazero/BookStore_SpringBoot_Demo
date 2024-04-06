@@ -51,21 +51,24 @@ public class CartItemController {
 	@GetMapping("/add-to-cart/{productId}")
 	public String addToCart(@PathVariable("productId") int productId, Model model) {
 		User userLogin = (User) session.getAttribute("userLogin");
-		
-		List<CartItem> cartItems = cartItemService.getAllCartItemByCartId(userLogin.getId());
-		for (CartItem cartItem : cartItems) {
-			if(productId == cartItem.getProduct().getId()) {
-				System.out.println("trung: " + cartItem.getProduct().getId());
-				model.addAttribute("error", "Sản phẩm đã tồn tại trong giỏ hàng");
-				return "redirect:/home";
+		if(userLogin!=null) {
+			List<CartItem> cartItems = cartItemService.getAllCartItemByCartId(userLogin.getId());
+			for (CartItem cartItem : cartItems) {
+				if(productId == cartItem.getProduct().getId()) {
+					session.setAttribute("error", "Sản phẩm đã tồn tại trong giỏ hàng");
+					return "redirect:/home";
+				}
 			}
-		}
-		
-	    Product p = productService.getProductById(productId);
-		Cart c = cartService.getCartByUser(userLogin.getId());
-		CartItem cartItem = new CartItem(c, p, 1);
-		cartItemService.saveCartItem(cartItem);
-		return "redirect:/home";
+			
+			Product p = productService.getProductById(productId);
+			Cart c = cartService.getCartByUser(userLogin.getId());
+			CartItem cartItem = new CartItem(c, p, 1);
+			cartItemService.saveCartItem(cartItem);
+			return "redirect:/home";
+		}else {
+			session.setAttribute("error", "Bạn chưa đăng nhập");
+			return "redirect:/home";
+		}    
 	}
 	
 	@GetMapping("/delete/{itemId}")

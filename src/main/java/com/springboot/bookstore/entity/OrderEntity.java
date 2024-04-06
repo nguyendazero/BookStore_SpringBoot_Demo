@@ -28,6 +28,13 @@ public class OrderEntity {
 		this.total = total;
 		this.date = date;
 	}
+	
+	public OrderEntity( User idUser, Double total, Date date) {
+		super();
+		this.idUser = idUser;
+		this.total = total;
+		this.date = date;
+	}
 
 	public OrderEntity() {
 

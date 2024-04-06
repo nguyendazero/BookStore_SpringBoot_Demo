@@ -182,7 +182,7 @@ tfoot td {
     </table>
 
     <!-- Nút thanh toán -->
-    <a href="/checkout" class="checkout-btn">Thanh toán</a>
+    <a th:if="${cartItems != null and not cartItems.isEmpty()}" th:href="@{/checkout(sum=${sum})}" class="checkout-btn">Thanh Toán</a>
 </div>
 
 </body>
