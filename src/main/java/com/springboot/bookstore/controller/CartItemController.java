@@ -71,7 +71,7 @@ public class CartItemController {
 		}    
 	}
 	
-	@GetMapping("/delete/{itemId}")
+	@GetMapping("/cart/delete/{itemId}")
 	public String DeleteCartItems(@PathVariable("itemId") int itemId, Model model) {
 		User userLogin = (User) session.getAttribute("userLogin");
 		

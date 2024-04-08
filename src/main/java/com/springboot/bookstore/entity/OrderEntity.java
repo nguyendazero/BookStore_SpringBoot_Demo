@@ -9,6 +9,7 @@ import jakarta.persistence.*;
 public class OrderEntity {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     
     @ManyToOne

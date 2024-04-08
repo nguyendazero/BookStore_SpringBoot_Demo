@@ -163,7 +163,7 @@ tfoot td {
 
                 <td th:text="${item.quantity * item.product.priceSelling}"></td>
                 <td>
-                    <form th:action="@{/delete/{itemId}(itemId=${item.id})}" method="get">
+                    <form th:action="@{/cart/delete/{itemId}(itemId=${item.id})}" method="get">
                         <button type="submit">Xóa</button>
                     </form>
                 </td>

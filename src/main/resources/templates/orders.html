@@ -123,7 +123,7 @@ table th {
                     <td th:text="${order.total}">Tổng giá trị</td>
                     <td>Đã hoàn thành</td>
                     <td>
-	                    <form th:action="@{/delete/{orderId}(orderId=${order.id})}" method="get">
+	                    <form th:action="@{/order/delete/{orderId}(orderId=${order.id})}" method="get">
 	                        <button type="submit">Xóa</button>
 	                    </form>
                 	</td>

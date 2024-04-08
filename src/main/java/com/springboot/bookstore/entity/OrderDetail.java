@@ -29,6 +29,13 @@ public class OrderDetail {
 		this.product = product;
 		this.quantity = quantity;
 	}
+	
+	public OrderDetail( OrderEntity order, Product product, int quantity) {
+		super();
+		this.order = order;
+		this.product = product;
+		this.quantity = quantity;
+	}
 
 	public OrderDetail() {
 
