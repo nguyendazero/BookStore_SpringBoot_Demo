@@ -38,18 +38,17 @@ public class OrderEntityController {
 	public String checkout(@RequestParam("sum") double sum, Model model) {
 		User userLogin = (User) session.getAttribute("userLogin");
 		if(userLogin!=null) {
-//			Random random = new Random();
-//	        int randomNumber = random.nextInt(5000) + 1;
+			Random random = new Random();
+	        int randomNumber = random.nextInt(5000) + 1;
 	        
 			long millis=System.currentTimeMillis();
 			java.sql.Date date = new java.sql.Date(millis); 
-
-			OrderEntity o = new OrderEntity(userLogin, sum,date);
+			
+			session.setAttribute("randomNumber", randomNumber);
+			OrderEntity o = new OrderEntity(randomNumber, userLogin, sum,date);
 			o = orderEntityService.saveOrderEntity(o);
 			
-	        
-	        cartItemService.removeAllCartItemsByIdCart(userLogin.getId());
-	        return "redirect:/orders/" + userLogin.getId();
+			return "redirect:/add-order-detail";
 		}else {
 			model.addAttribute("error", "Bạn chưa đăng nhập");
 			return "cart";

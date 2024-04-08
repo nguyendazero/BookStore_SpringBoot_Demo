@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta charset="UTF-8">
-<title>Danh sách đơn hàng</title>
-<style>
+<meta charset="ISO-8859-1">
+<title>Trang Chủ</title>
+ <style>
 		/* Reset CSS */
 * {
     margin: 0;
@@ -62,12 +62,35 @@ table th {
     background-color: #333;
     color: #fff;
 }
-</style>
 
+tfoot td {
+    font-weight: bold;
+}
+
+.checkout-btn {
+    display: inline-block;
+    background: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 20px;
+}
+
+.checkout-btn:hover {
+    background: #45a049;
+}
+
+    </style>
 </head>
 <body>
-     <!-- Header -->
-    <header>
+	
+		
+	
+	<header>
         <div class="container">
             <form class="search-form" action="/search" method="GET">
                 <input type="text" name="search" placeholder="Tìm kiếm...">
@@ -100,42 +123,37 @@ table th {
             </nav>
         </div>
     </header>
-
-    <!-- Content -->
     <div class="container">
-        <h1>Danh sách đơn hàng</h1>
-        <table>
-            <thead>
-                <tr>
-                    <th>Mã đơn hàng</th>
-                    <th>Ngày đặt hàng</th>
-                    <th>Tổng giá trị</th>
-                    <th>Trạng thái</th>
-                    <th>Xem chi tiết</th>
-                    <th>Hủy bỏ</th>
-                    <!-- Thêm các cột khác nếu cần -->
-                </tr>
-            </thead>
-            <tbody>
-                <!-- Duyệt qua danh sách các đơn hàng -->
-                <tr th:each="order : ${orders}">
-                    <td th:text="${order.id}">Mã đơn hàng</td>
-                    <td th:text="${order.date}">Ngày đặt hàng</td>
-                    <td th:text="${order.total}">Tổng giá trị</td>
-                    <td>Đã hoàn thành</td>
-                    <td>
-						<button style="height: 25px; width: 100px;"><a th:href="@{/order-detail/{id} (id=${order.id}) }">Chi tiết</a></button>
-					</td>
-                    
-                    <td>
-	                    <form th:action="@{/order/delete/{orderId}(orderId=${order.id})}" method="get">
-	                        <button type="submit">Xóa</button>
-	                    </form>
-                	</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+    <h1 class="text-center">Chi Tiết Đơn Hàng</h1>
 
+<div th:if="${order}">
+    <p><strong>Số Đơn Hàng:</strong> <span th:text="${order.id}"></span></p>
+    <p><strong>Ngày Đặt Hàng:</strong> <span th:text="${order.date}"></span></p>
+    <p><strong>Tổng Tiền:</strong> <span th:text="${order.total}"></span></p>
+    <p><strong>Khách Hàng:</strong> <span th:text="${order.idUser.fullName}"></span></p>
+    <!-- Thêm các thông tin khác về đơn hàng tại đây -->
+    <h2>Chi Tiết Sản Phẩm:</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Tên Sản Phẩm</th>
+                <th>Danh mục</th>
+                <th>Đơn giá</th>
+                <th>Số Lượng</th>
+                <th>Thành tiền</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="orderDetail : ${od}">
+                <td th:text="${orderDetail.productName}"></td>
+                <td th:text="${orderDetail.category}"></td>
+                <td th:text="${orderDetail.price}"></td>
+                <td th:text="${orderDetail.quantity}"></td>
+                <td th:text="${orderDetail.quantity * orderDetail.price}"></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+    </div>
 </body>
 </html>

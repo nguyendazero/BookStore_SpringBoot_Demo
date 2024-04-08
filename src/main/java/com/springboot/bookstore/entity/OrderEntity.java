@@ -9,7 +9,6 @@ import jakarta.persistence.*;
 public class OrderEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     
     @ManyToOne
@@ -30,12 +29,6 @@ public class OrderEntity {
 		this.date = date;
 	}
 	
-	public OrderEntity( User idUser, Double total, Date date) {
-		super();
-		this.idUser = idUser;
-		this.total = total;
-		this.date = date;
-	}
 
 	public OrderEntity() {
 
