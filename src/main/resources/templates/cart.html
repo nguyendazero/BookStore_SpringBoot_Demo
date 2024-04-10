@@ -129,7 +129,8 @@ tfoot td {
     <!-- Nếu không, hiển thị nội dung giỏ hàng -->
     <h1 th:if="${cartItems != null and not cartItems.isEmpty()}">Giỏ hàng của bạn</h1>
     
-    <p th:if="${error}" style="color: red;" th:text="${error}"></p>
+    <p style="color: red;" th:if="${session.error != null}" th:text="${session.error}"></p>
+	<p style="color: red;" th:if="${error != null}" th:text="${error}"></p>
     
     <!-- Nếu có sản phẩm trong giỏ hàng, hiển thị bảng giỏ hàng -->
     <table th:if="${cartItems != null and not cartItems.isEmpty()}">

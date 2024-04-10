@@ -27,6 +27,11 @@ public class OrderDetailServiceImpl implements OrderDetailService{
 	public OrderDetail saveOrderDetail(OrderDetail od) {
 		return orderDetailRepository.save(od);
 	}
+
+	@Override
+	public OrderDetail updateOrderDetail(OrderDetail od) {
+		return orderDetailRepository.save(od);
+	}
 	
 	
 	

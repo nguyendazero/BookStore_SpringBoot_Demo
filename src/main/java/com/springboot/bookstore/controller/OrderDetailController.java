@@ -37,35 +37,50 @@ public class OrderDetailController {
 	
 	@GetMapping("/add-order-detail")
 	public String addOrderDetail(Model model) {
-		User userLogin = (User) session.getAttribute("userLogin");
-		int random = (int) session.getAttribute("randomNumber");
-		
-		boolean check = false;
-		List<Product> products = new ArrayList<>();
-		
-		List<CartItem> cartItems = cartItemService.getAllCartItemByCartId(userLogin.getId());
-		for (CartItem cartItem : cartItems) {
-			OrderDetail od = new OrderDetail(random, cartItem.getQuantity(), cartItem.getProduct().getProductName(), cartItem.getProduct().getCategory().getName(), cartItem.getProduct().getPriceSelling());
-			orderDetailService.saveOrderDetail(od);
-			Product p = cartItem.getProduct();
-			p.setRemainQuantity(p.getRemainQuantity()-cartItem.getQuantity());
-			productService.updateProduct(p);
-			products.add(p);
-			if(p.getRemainQuantity() < 0) {
-				for (Product product : products) {
-					product.setRemainQuantity(product.getRemainQuantity()+cartItem.getQuantity());
-					orderEntityService.deleteOrderEntity(random);
-					model.addAttribute("error", "không đủ số lượng sản phẩm "+product.getProductName()+ " trong kho");
-					return "redirect:/cartItems/"+userLogin.getId();
-				}
+	    User userLogin = (User) session.getAttribute("userLogin");
+	    int random = (int) session.getAttribute("randomNumber");
+	    
+	    boolean chuyenTrang = true;
+	    
+	    List<CartItem> temp = new ArrayList<>();
+	    
+	    List<CartItem> cartItems = cartItemService.getAllCartItemByCartId(userLogin.getId());
+	    for (CartItem cartItem : cartItems) {
+	        OrderDetail od = new OrderDetail(random, cartItem.getQuantity(), cartItem.getProduct().getProductName(), cartItem.getProduct().getCategory().getName(), cartItem.getProduct().getPriceSelling());
+	        orderDetailService.saveOrderDetail(od);
+	        Product p = cartItem.getProduct();
+	        
+	        int soLuongCon = p.getRemainQuantity() - cartItem.getQuantity();
+	        if (soLuongCon < 0) {
+	            session.setAttribute("error", "Không đủ số lượng sản phẩm " + p.getProductName() + " trong kho!");
+	            chuyenTrang = false;
+	            break;
+	        }else if(soLuongCon == 0) {
+	        	p.setStatus("hết hàng");
+	        	p.setRemainQuantity(soLuongCon);
+	            productService.updateProduct(p);
+	            temp.add(cartItem);
+	        }else {
+	        	p.setRemainQuantity(soLuongCon);
+		        productService.updateProduct(p);
+		        temp.add(cartItem);
+	        }
+	    }
+	    
+	    if (!chuyenTrang) {
+	        orderEntityService.deleteOrderEntity(random);
+	        for (CartItem cartItem : temp) {
+				Product p = cartItem.getProduct();
+				p.setRemainQuantity(p.getRemainQuantity() + cartItem.getQuantity());
+				productService.updateProduct(p);
 			}
-			
-		}
-		
-		
-		cartItemService.removeAllCartItemsByIdCart(userLogin.getId());
-		return "redirect:/orders/" + userLogin.getId();
+	        return "redirect:/cartItems/" + userLogin.getId();
+	    } else {
+	        cartItemService.removeAllCartItemsByIdCart(userLogin.getId());
+	        return "redirect:/orders/" + userLogin.getId();
+	    }   
 	}
+
 	
 	@GetMapping("/order-detail/{id}")
 	public String viewOrderDetail(@PathVariable("id") int id, Model model) {

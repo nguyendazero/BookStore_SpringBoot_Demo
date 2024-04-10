@@ -10,4 +10,6 @@ public interface OrderDetailService {
 	
 	OrderDetail saveOrderDetail(OrderDetail od);
 	
+	OrderDetail updateOrderDetail(OrderDetail od);
+	
 }
