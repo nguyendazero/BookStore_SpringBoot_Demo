@@ -123,7 +123,14 @@ tfoot td {
             </nav>
         </div>
     </header>
-    <div class="container">
+    
+    <div class="container" th:if="${session.userLogin == null}">
+        <h1>Bạn chưa đăng nhập</h1>
+        <p>Vui lòng đăng nhập để xem chi tiết đơn hàng của bạn.</p>
+        <a th:href="@{/login}">Đăng nhập</a>
+    </div>
+    
+    <div class="container" th:if="${session.userLogin != null}">
     <h1 class="text-center">Chi Tiết Đơn Hàng</h1>
 
 <div th:if="${order}">

@@ -57,6 +57,21 @@ public class Product {
 		this.remainQuantity = remainQuantity;
 		this.author = author;
 	}
+	
+	public Product(String productName, Category category, Double priceSelling, Double priceOriginal,
+			String image, String status, String description, int likes, int remainQuantity, Author author) {
+		super();
+		this.productName = productName;
+		this.category = category;
+		this.priceSelling = priceSelling;
+		this.priceOriginal = priceOriginal;
+		this.image = image;
+		this.status = status;
+		this.description = description;
+		this.likes = likes;
+		this.remainQuantity = remainQuantity;
+		this.author = author;
+	}
 
 	public Product() {
 	

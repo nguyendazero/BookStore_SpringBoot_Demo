@@ -135,65 +135,77 @@
     </style>
 </head>
 <body>
-
-<nav>
-    <ul>
-        <li><a th:href="@{/home-admin}">Home</a></li>
-        <li><a th:href="@{/manager-users}">Tài khoản</a></li>
-        <li><a th:href="@{/manager-products}">Sản phẩm</a></li>
-        <li><a th:href="@{/manager-categories}">Thể loại</a></li>
-        <li><a th:href="@{/manager-authors}">Tác giả</a></li>
-        <li><a th:href="@{/manager-orders}">Đơn hàng</a></li>
-        <li><a th:href="@{/logout}">Đăng xuất</a></li>
-    </ul>
-</nav>
-
-<h2>Quản Lý Tác Giả</h2>
-<h2>Thêm Tác Giả Mới</h2>
-
-<form id="addForm" th:action="@{/authors/add}" method="post">
-    <label>Họ Tên: <input type="text" name="name"></label><br>
-    <label>Quê quán: <input type="text" name="home-town"></label><br>
-    <label>Ngày sinh: <input type="date" name="date"></label><br>
-    <label>Hình ảnh: <input type="text" name="img"></label><br>
-    <label>Tiểu sử: <input type="text" name="story"></label><br>
-    <button type="submit">Thêm Tác Giả</button>
-</form>
-<table>
-    <thead>
-        <tr>
-            <th>Tên Tác Giả</th>
-            <th>Quê quán</th>
-            <th>Ngày sinh</th>
-            <th>Tiểu sử</th>
-            <th>Xóa</th>
-            <th>Chỉnh sửa</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr th:each="author : ${authors}">
-            <td th:text="${author.fullName}"></td>
-            <td th:text="${author.homeTown}"></td>
-            <td th:text="${author.dateOfBirth}"></td>
-            <td th:text="${author.story}"></td>
-            <td>
-                <form th:action="@{/authors/delete/{id} (id=${author.id})}" method="get">
-                    <input type="hidden" name="authorId" th:value="${author.id}">
-                    <button type="submit">Xóa</button>
-                </form>
-            </td>
-            <td>
-			    <form th:action="@{/edit-authors/{id}}" th:method="get">
-			        <input type="hidden" name="id" th:value="${author.id}">
-			        <button type="submit">Chỉnh sửa</button>
-			    </form>
-			</td>
-
-        </tr>
-    </tbody>
-</table>
-
-
-
+	<div class="container" th:if="${session.userLogin == null}">
+	    <h1>Bạn chưa đăng nhập với tư cách quản trị viên</h1>
+	    <p>Đăng nhập ngay</p>
+	    <a th:href="@{/login}">Đăng nhập</a>
+	    <br>
+	    <a th:href="@{/home}">Trang chủ</a>
+	</div>
+	
+	<div class="container" th:if="${session.userLogin != null}">
+		<div th:if="${session.userLogin.role == 0}">
+	        <h1>Bạn không được cấp quyền vào trang này</h1>
+	        <p>Quay lại trang chủ</p>
+	        <a th:href="@{/home}">Trang chủ</a>
+    	</div>
+		<div th:if="${session.userLogin != null && session.userLogin.role == 1}">
+			<nav>
+			    <ul>
+			        <li><a th:href="@{/home-admin}">Home</a></li>
+			        <li><a th:href="@{/manager-users}">Tài khoản</a></li>
+			        <li><a th:href="@{/manager-products}">Sản phẩm</a></li>
+			        <li><a th:href="@{/manager-categories}">Thể loại</a></li>
+			        <li><a th:href="@{/manager-authors}">Tác giả</a></li>
+			        <li><a th:href="@{/manager-orders}">Đơn hàng</a></li>
+			        <li><a th:href="@{/logout}">Đăng xuất</a></li>
+			    </ul>
+			</nav>
+			
+			<h2>Quản Lý Tác Giả</h2>
+			<h2>Thêm Tác Giả Mới</h2>
+			
+			<form id="addForm" th:action="@{/authors/add}" method="post">
+			    <label>Họ Tên: <input type="text" name="name"></label><br>
+			    <label>Quê quán: <input type="text" name="home-town"></label><br>
+			    <label>Ngày sinh: <input type="date" name="date"></label><br>
+			    <label>Hình ảnh: <input type="text" name="img"></label><br>
+			    <label>Tiểu sử: <input type="text" name="story"></label><br>
+			    <button type="submit">Thêm Tác Giả</button>
+			</form>
+			<table>
+			    <thead>
+			        <tr>
+			            <th>Tên Tác Giả</th>
+			            <th>Quê quán</th>
+			            <th>Ngày sinh</th>
+			            <th>Tiểu sử</th>
+			            <th>Xóa</th>
+			            <th>Chỉnh sửa</th>
+			        </tr>
+			    </thead>
+			    <tbody>
+			        <tr th:each="author : ${authors}">
+			            <td th:text="${author.fullName}"></td>
+			            <td th:text="${author.homeTown}"></td>
+			            <td th:text="${author.dateOfBirth}"></td>
+			            <td th:text="${author.story}"></td>
+			            <td>
+			                <form th:action="@{/authors/delete/{id} (id=${author.id})}" method="get">
+			                    <input type="hidden" name="authorId" th:value="${author.id}">
+			                    <button type="submit">Xóa</button>
+			                </form>
+			            </td>
+			            <td>
+						    <form th:action="@{/edit-authors/{id}}" th:method="get">
+						        <input type="hidden" name="id" th:value="${author.id}">
+						        <button type="submit">Chỉnh sửa</button>
+						    </form>
+						</td>
+			        </tr>
+			    </tbody>
+			</table>
+		</div>
+	</div>
 </body>
 </html>

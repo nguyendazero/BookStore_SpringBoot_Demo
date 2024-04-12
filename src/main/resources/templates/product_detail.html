@@ -108,7 +108,7 @@ header nav ul li {
 
 
 	
-		<header>
+	    <header>
     <div class="container">
         <form class="search-form" action="/search" method="GET">
             <input type="text" name="search" placeholder="Tìm kiếm...">
@@ -118,8 +118,13 @@ header nav ul li {
         <nav>
             <ul>
                 <li><a th:href="@{/home}">Home</a></li>
+                
                 <li th:if="${session.userLogin != null}">
-                    <a href="#">Đơn hàng</a>
+                    <a th:href="@{/cart/{id} (id=${session.userLogin.id}) }">Giỏ hàng</a>
+                </li>
+                
+                <li th:if="${session.userLogin != null}">
+                    <a th:href="@{/orders/{id} (id=${session.userLogin.id}) }">Đơn hàng</a>
                 </li>
                 
                 <li th:unless="${session.userLogin != null}" class="btn btn-success">
@@ -172,7 +177,9 @@ header nav ul li {
                    
                    	
                     <div class="action">
-                        <a th:href="@{/add-to-cart/{id} (id=${product.id})}" class="add-to-cart btn btn-default" type="button"><i class="fas fa-cart-plus"></i>Thêm vào giỏ hàng</a>
+           
+                        <a th:if="${product.status == 'hết hàng'}" class="btn btn-danger">Đã hết hàng</a>
+                        <a th:if="${product.status != 'hết hàng'}" th:href="@{/add-to-cart/{id} (id=${product.id})}" class="add-to-cart btn btn-success" type="button"><i class="fas fa-cart-plus"></i>Thêm vào giỏ hàng</a>
                         <a th:href="@{/inc-likes/{id} (id=${product.id})}"> <button class="like btn btn-default" type="button"><span class="fa fa-heart"></span></button></a>
                     </div>
                    

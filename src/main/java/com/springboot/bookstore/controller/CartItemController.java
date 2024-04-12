@@ -19,6 +19,7 @@ import com.springboot.bookstore.service.CartItemService;
 import com.springboot.bookstore.service.CartService;
 import com.springboot.bookstore.service.ProductService;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
 @Controller
@@ -49,27 +50,28 @@ public class CartItemController {
 	}
 
 	@GetMapping("/add-to-cart/{productId}")
-	public String addToCart(@PathVariable("productId") int productId, Model model) {
-		User userLogin = (User) session.getAttribute("userLogin");
-		if(userLogin!=null) {
-			List<CartItem> cartItems = cartItemService.getAllCartItemByCartId(userLogin.getId());
-			for (CartItem cartItem : cartItems) {
-				if(productId == cartItem.getProduct().getId()) {
-					session.setAttribute("error", "Sản phẩm đã tồn tại trong giỏ hàng");
-					return "redirect:/home";
-				}
-			}
-			
-			Product p = productService.getProductById(productId);
-			Cart c = cartService.getCartByUser(userLogin.getId());
-			CartItem cartItem = new CartItem(c, p, 1);
-			cartItemService.saveCartItem(cartItem);
-			return "redirect:/home";
-		}else {
-			session.setAttribute("error", "Bạn chưa đăng nhập");
-			return "redirect:/home";
-		}    
+	public String addToCart(@PathVariable("productId") int productId, Model model, HttpServletRequest request) {
+	    User userLogin = (User) session.getAttribute("userLogin");
+	    if(userLogin != null) {
+	        List<CartItem> cartItems = cartItemService.getAllCartItemByCartId(userLogin.getId());
+	        for (CartItem cartItem : cartItems) {
+	            if(productId == cartItem.getProduct().getId()) {
+	                session.setAttribute("error", "Sản phẩm đã tồn tại trong giỏ hàng");
+	                return "redirect:" + request.getHeader("Referer");
+	            }
+	        }
+	        
+	        Product p = productService.getProductById(productId);
+	        Cart c = cartService.getCartByUser(userLogin.getId());
+	        CartItem cartItem = new CartItem(c, p, 1);
+	        cartItemService.saveCartItem(cartItem);
+	        return "redirect:" + request.getHeader("Referer");
+	    } else {
+	        session.setAttribute("error", "Bạn chưa đăng nhập");
+	        return "redirect:" + request.getHeader("Referer");
+	    }    
 	}
+
 	
 	@GetMapping("/cart/delete/{itemId}")
 	public String DeleteCartItems(@PathVariable("itemId") int itemId, Model model) {

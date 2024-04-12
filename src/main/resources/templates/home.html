@@ -275,9 +275,11 @@ footer p {
 					</a>
                     <h4 th:text = "${product.productName}"></h4>
                     <h5 style="color: green;">Tác giả: <span th:text = "${product.author.fullName}"></span></h5>
-                    <p style="color: gray;">Giá: <span th:text = "${product.priceSelling}"></span></p>
-                   	
-                    <a th:href="@{/add-to-cart/{productId}(productId=${product.id})}" class="btn">Thêm vào giỏ hàng</a>
+                    <p th:if="${product.status == 'giảm giá'}" th:text="${product.priceOriginal}" style="text-decoration: line-through;"></p>
+
+                    <p style="color: red;">Giá: <span th:text = "${product.priceSelling}"></span></p>
+                   	<a th:if="${product.status == 'hết hàng'}" class="btn">Đã hết hàng</a>
+                    <a th:if="${product.status != 'hết hàng'}" th:href="@{/add-to-cart/{productId}(productId=${product.id})}" class="btn">Thêm vào giỏ hàng</a>
                 </div>
               
             </div>

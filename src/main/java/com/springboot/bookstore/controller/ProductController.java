@@ -8,10 +8,12 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
+import com.springboot.bookstore.entity.Author;
 import com.springboot.bookstore.entity.Category;
 import com.springboot.bookstore.entity.Comment;
 import com.springboot.bookstore.entity.Product;
 import com.springboot.bookstore.entity.User;
+import com.springboot.bookstore.service.AuthorService;
 import com.springboot.bookstore.service.CategoryService;
 import com.springboot.bookstore.service.CommentService;
 import com.springboot.bookstore.service.ProductService;
@@ -21,6 +23,7 @@ import jakarta.servlet.http.HttpSession;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 
@@ -35,6 +38,8 @@ public class ProductController {
 	private CommentService commentService;
 	@Autowired
 	private HttpSession session;
+	@Autowired
+	private AuthorService authorService;
 	
 	@GetMapping("/product/{id}")
 	public String productDetail(@PathVariable int id, Model model) {
@@ -104,6 +109,39 @@ public class ProductController {
 		model.addAttribute("categories", categories);
 		model.addAttribute("products", p);
 		return "home";
+	}
+	
+	@GetMapping("/manager-products")
+	public String managerProducts(Model model) {
+		List<Author> authors = authorService.getAllAuthors();
+		List<Category> categories = categoryService.getAllCategorys();
+		List<Product> books = productService.getAllProducts();
+		model.addAttribute("books", books);
+		model.addAttribute("authors", authors);
+		model.addAttribute("categories", categories);
+		return "manager_products";
+	}
+	
+	@PostMapping("/add-book")
+	public String addBook(@RequestParam("name") String name,
+						@RequestParam("author") Author author,
+						@RequestParam("category") Category category,
+						@RequestParam("priceOriginal") Double priceOriginal,
+						@RequestParam("priceSelling") Double priceSelling,
+						@RequestParam("description") String description,
+						@RequestParam("image") String image,
+						@RequestParam("remainQuantity") int remainQuantity,
+						Model model) {
+		
+		Product p = new Product(name, category, priceSelling, priceOriginal, image, "đang bán", description, 0,remainQuantity , author);
+		productService.saveProduct(p);
+		return "redirect:/manager-products";
+	}
+	
+	@GetMapping("/book/delete/{id}")
+	public String deleteBook(@PathVariable("id") int id) {
+		productService.deleteProduct(id);
+		return "redirect:/manager-products";
 	}
 	
 }

@@ -100,56 +100,69 @@ button[type="submit"]:hover {
 	</style>
 </head>
 <body>
-
-<nav>
-    <ul>
-		<li><a th:href="@{/home-admin}">Home</a></li>
-        <li><a th:href="@{/manager-users}">Tài khoản</a></li>
-        <li><a th:href="@{/manager-products}">Sản phẩm</a></li>
-        <li><a th:href="@{/manager-categories}">Thể loại</a></li>
-        <li><a th:href="@{/manager-authors}">Tác giả</a></li>
-        <li><a th:href="@{/manager-orders}">Đơn hàng</a></li>
-        <li><a th:href="@{/logout}">Đăng xuất</a></li>
-    </ul>
-</nav>
-
-<h2>User List</h2>
-
-<table>
-    <thead>
-        <tr>
-            <th>Họ Tên</th>
-            <th>Địa chỉ</th>
-            <th>Email</th>
-            <th>Điện thoại</th>
-            <th>Giới tính</th>
-            <th>Vai trò</th>
-            <th>Xóa</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr th:each="user : ${users}">
-            <td th:text="${user.fullName}"></td>
-            <td th:text="${user.address}"></td>
-            <td th:text="${user.email}"></td>
-            <td th:text="${user.telephone}"></td>
-            <td th:text="${user.gender}"></td>
-            <td>
-			    <span th:if="${user.role == 0}">Người dùng</span>
-			    <span th:if="${user.role != 0}">Quản trị viên</span>
-			</td>
-
-            <td>
-			    <form th:action="@{/users/delete/{id} (id=${user.id})}" method="get">
-			        <input type="hidden" name="userId" th:value="${user.id}">
-			        <button type="submit">Delete</button>
-			    </form>
-			</td>
-
-        </tr>
-    </tbody>
-</table>
-
-
+	<div class="container" th:if="${session.userLogin == null}">
+	    <h1>Bạn chưa đăng nhập với tư cách quản trị viên</h1>
+	    <p>Đăng nhập ngay</p>
+	    <a th:href="@{/login}">Đăng nhập</a>
+	    <br>
+	    <a th:href="@{/home}">Trang chủ</a>
+	</div>
+	
+	<div class="container" th:if="${session.userLogin != null}">
+		<div th:if="${session.userLogin.role == 0}">
+	        <h1>Bạn không được cấp quyền vào trang này</h1>
+	        <p>Quay lại trang chủ</p>
+	        <a th:href="@{/home}">Trang chủ</a>
+    	</div>
+		<div th:if="${session.userLogin != null && session.userLogin.role == 1}">
+			<nav>
+			    <ul>
+					<li><a th:href="@{/home-admin}">Home</a></li>
+			        <li><a th:href="@{/manager-users}">Tài khoản</a></li>
+			        <li><a th:href="@{/manager-products}">Sản phẩm</a></li>
+			        <li><a th:href="@{/manager-categories}">Thể loại</a></li>
+			        <li><a th:href="@{/manager-authors}">Tác giả</a></li>
+			        <li><a th:href="@{/manager-orders}">Đơn hàng</a></li>
+			        <li><a th:href="@{/logout}">Đăng xuất</a></li>
+			    </ul>
+			</nav>
+			
+			<h2>User List</h2>
+			
+			<table>
+			    <thead>
+			        <tr>
+			            <th>Họ Tên</th>
+			            <th>Địa chỉ</th>
+			            <th>Email</th>
+			            <th>Điện thoại</th>
+			            <th>Giới tính</th>
+			            <th>Vai trò</th>
+			            <th>Xóa</th>
+			        </tr>
+			    </thead>
+			    <tbody>
+			        <tr th:each="user : ${users}">
+			            <td th:text="${user.fullName}"></td>
+			            <td th:text="${user.address}"></td>
+			            <td th:text="${user.email}"></td>
+			            <td th:text="${user.telephone}"></td>
+			            <td th:text="${user.gender}"></td>
+			            <td>
+						    <span th:if="${user.role == 0}">Người dùng</span>
+						    <span th:if="${user.role != 0}">Quản trị viên</span>
+						</td>
+			
+			            <td>
+						    <form th:action="@{/users/delete/{id} (id=${user.id})}" method="get">
+						        <input type="hidden" name="userId" th:value="${user.id}">
+						        <button type="submit">Delete</button>
+						    </form>
+						</td>			
+        			</tr>
+    			</tbody>
+			</table>
+		</div>
+	</div>
 </body>
 </html>

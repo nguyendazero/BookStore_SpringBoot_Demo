@@ -100,9 +100,15 @@ table th {
             </nav>
         </div>
     </header>
+    
+    <div class="container" th:if="${session.userLogin == null}">
+        <h1>Bạn chưa đăng nhập</h1>
+        <p>Vui lòng đăng nhập để xem đơn hàng của bạn.</p>
+        <a th:href="@{/login}">Đăng nhập</a>
+    </div>
 
     <!-- Content -->
-    <div class="container">
+    <div class="container" th:if="${session.userLogin != null}">
         <h1>Danh sách đơn hàng</h1>
         <table>
             <thead>

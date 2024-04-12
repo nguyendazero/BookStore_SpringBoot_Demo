@@ -121,9 +121,15 @@ tfoot td {
             </nav>
         </div>
     </header>
+    
+    <div class="container" th:if="${session.userLogin == null}">
+        <h1>Bạn chưa đăng nhập</h1>
+        <p>Vui lòng đăng nhập để xem giỏ hàng.</p>
+        <a th:href="@{/login}">Đăng nhập</a>
+    </div>
 
     <!-- Nội dung giỏ hàng -->
-    <div class="container">
+    <div class="container" th:if="${session.userLogin != null}">
     <!-- Kiểm tra nếu cartItems là null hoặc rỗng -->
     <h1 th:if="${cartItems == null or cartItems.isEmpty()}">Chưa có sản phẩm trong giỏ hàng</h1>
     <!-- Nếu không, hiển thị nội dung giỏ hàng -->

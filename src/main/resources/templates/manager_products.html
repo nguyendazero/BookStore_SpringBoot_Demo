@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản lý sản phẩm</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+          integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z"
+          crossorigin="anonymous">
+</head>
+<style>
+	nav {
+            background-color: #444;
+            color: #fff;
+            padding: 10px;
+        }
+
+        nav ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        nav ul li {
+            display: inline;
+            margin-right: 20px;
+        }
+
+        nav ul li a {
+            color: #fff;
+            text-decoration: none;
+        }
+</style>
+
+<body>
+	
+	<div th:if="${session.userLogin == null}">
+	    <h1>Bạn chưa đăng nhập với tư cách quản trị viên</h1>
+	    <p>Đăng nhập ngay</p>
+	    <a th:href="@{/login}">Đăng nhập</a>
+	    <br>
+	    <a th:href="@{/home}">Trang chủ</a>
+	</div>
+	
+	<div th:if="${session.userLogin != null}">
+		<div th:if="${session.userLogin.role == 0}">
+	        <h1>Bạn không được cấp quyền vào trang này</h1>
+	        <p>Quay lại trang chủ</p>
+	        <a th:href="@{/home}">Trang chủ</a>
+    </div>
+	<div th:if="${session.userLogin != null && session.userLogin.role == 1}">
+		<nav>
+		    <ul>
+				<li><a th:href="@{/home-admin}">Home</a></li>
+		        <li><a th:href="@{/manager-users}">Tài khoản</a></li>
+		        <li><a th:href="@{/manager-products}">Sản phẩm</a></li>
+		        <li><a th:href="@{/manager-categories}">Thể loại</a></li>
+		        <li><a th:href="@{/manager-authors}">Tác giả</a></li>
+		        <li><a th:href="@{/manager-orders}">Đơn hàng</a></li>
+		        <li><a th:href="@{/logout}">Đăng xuất</a></li>
+		    </ul>
+		</nav>
+		<div class=" mt-5">
+		    <h2 class="text-center mb-4">Quản lý sản phẩm</h2>
+		    <div class="row ml-4">
+		        <div class="col-md-3">
+		            <form th:action="@{/add-book}" method="post">
+		                <div class="form-group">
+		                    <label for="name">Tên sản phẩm</label>
+		                    <input type="text" class="form-control" id="name" name="name" required>
+		                </div>
+		                <div class="form-group">
+						    <label for="author">Tác giả:</label>
+						    <select class="form-control" id="author" name="author" required>
+						        <option th:each="author : ${authors}" th:value="${author.id}" th:text="${author.fullName}"></option>
+						    </select>
+						</div>
+						<div class="form-group">
+						    <label for="category">Thể loại:</label>
+						    <select class="form-control" id="category" name="category" required>
+						        <option th:each="category : ${categories}" th:value="${category.id}" th:text="${category.name}"></option>
+						    </select>
+						</div>
+		                <div class="form-group">
+		                    <label for="priceOriginal">Giá gốc:</label>
+		                    <input type="number" class="form-control" id="priceOriginal" name="priceOriginal" required>
+		                </div>
+		                <div class="form-group">
+		                    <label for="priceSelling">Giá bán:</label>
+		                    <input type="number" class="form-control" id="priceSelling" name="priceSelling" required>
+		                </div>
+		                <div class="form-group">
+		                    <label for="description">Mô tả:</label>
+		                    <input type="text" class="form-control" id="description" name="description" required>
+		                </div>
+		                <div class="form-group">
+		                    <label for="image">Hình ảnh:</label>
+		                    <input type="text" class="form-control" id="image" name="image" required>
+		                </div>
+		                <div class="form-group">
+		                    <label for="remainQuantity">Số lượng:</label>
+		                    <input type="number" class="form-control" id="remainQuantity" name="remainQuantity" required>
+		                </div>
+		
+		                <button type="submit" class="btn btn-primary">Thêm sách</button>
+		            </form>
+		        </div>
+		        <div class="col-md-9">
+		            <h3>Danh sách Sách</h3>
+		            <table class="table">
+		                <thead>
+		                <tr>
+		                    <th>STT</th>
+		                    <th>Tiêu đề</th>
+		                    <th>Thể loại</th>
+		                    <th>Tác giả</th>
+		                    <th>Giá</th>
+		                    <th>Mô tả</th>
+		                    <th>Action</th>
+		                </tr>
+		                </thead>
+		                <tbody>
+		                <!-- Loop through books here -->
+		                <tr th:each="book, iterStat : ${books}">
+		                    <td th:text="${iterStat.index + 1}"></td>
+		                    <td th:text="${book.productName}"></td>
+		                    <td th:text="${book.category.name}"></td>
+		                    <td th:text="${book.author.fullName}"></td>
+		                    <td th:text="${book.priceSelling}"></td>
+		                    <td th:text="${book.description}"></td>
+		                    <td>
+		                        <a th:href="@{'book/edit/' + ${book.id}}" class="btn btn-sm btn-primary">Sửa</a>
+		                        <a th:href="@{/book/delete/{id} (id=${book.id})}" class="btn btn-sm btn-danger">Xóa</a>
+		                    </td>
+		                </tr>
+		                </tbody>
+		            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap JS and dependencies -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"
+        integrity="sha384-nBpVBTK/UcvWskLcWsvDAJ0zPBwnQWZVmjpR8e2U+9wF5UZly6yUqnWh7tjgsxEr"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
+        integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shCk5KVq2+8vB7/CmNqd9+XvoKbT+IrFy+EdT"
+        crossorigin="anonymous"></script>
+</body>
+</html>
