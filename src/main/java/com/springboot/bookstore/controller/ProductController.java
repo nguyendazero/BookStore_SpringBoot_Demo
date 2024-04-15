@@ -144,4 +144,32 @@ public class ProductController {
 		return "redirect:/manager-products";
 	}
 	
+	@GetMapping("book/edit/{id}")
+	public String editBook(@PathVariable("id") int id, Model model) {
+		Product book = productService.getProductById(id);
+		model.addAttribute("book", book);
+		return "edit_product";
+	}
+	
+	@PostMapping("/update-product/{id}")
+	public String updateBook(@PathVariable("id") int id, Model model,
+							@RequestParam("productName") String productName,
+							@RequestParam("productDescription") String productDescription,
+							@RequestParam("productPriceSelling") Double productPriceSelling,
+							@RequestParam("productPriceOriginal") Double productPriceOriginal,
+							@RequestParam("productImage") String productImage,
+							@RequestParam("productRemainQuantity") int productRemainQuantity,
+							@RequestParam("productStatus") String productStatus) {
+		Product p = productService.getProductById(id);
+		p.setProductName(productName);
+		p.setDescription(productDescription);
+		p.setPriceSelling(productPriceSelling);
+		p.setPriceOriginal(productPriceOriginal);
+		p.setImage(productImage);
+		p.setRemainQuantity(productRemainQuantity);
+		p.setStatus(productStatus);
+		productService.updateProduct(p);
+		return "redirect:/manager-products";
+	}
+	
 }

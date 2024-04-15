@@ -129,6 +129,10 @@ button[type="submit"]:hover {
 			
 			<h2>User List</h2>
 			
+			<h3 class="text-center" style="color: red;" th:if="${session.error != null}" th:text="${session.error}"></h3>
+			<h3 class="text-center" style="color: red;" th:if="${error != null}" th:text="${error}"></h3>
+			
+
 			<table>
 			    <thead>
 			        <tr>
@@ -150,7 +154,8 @@ button[type="submit"]:hover {
 			            <td th:text="${user.gender}"></td>
 			            <td>
 						    <span th:if="${user.role == 0}">Người dùng</span>
-						    <span th:if="${user.role != 0}">Quản trị viên</span>
+						    <span th:if="${user.role != 0 && user.userName != 'admin'}">Quản trị viên</span>
+						    <span th:if="${user.role != 0 && user.userName == 'admin'}">Quản trị viên cao cấp</span>
 						</td>
 			
 			            <td>

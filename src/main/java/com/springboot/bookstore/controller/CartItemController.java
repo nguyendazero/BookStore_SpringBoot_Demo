@@ -67,7 +67,7 @@ public class CartItemController {
 	        cartItemService.saveCartItem(cartItem);
 	        return "redirect:" + request.getHeader("Referer");
 	    } else {
-	        session.setAttribute("error", "Bạn chưa đăng nhập");
+	        session.setAttribute("errorLogin", "Bạn chưa đăng nhập");
 	        return "redirect:" + request.getHeader("Referer");
 	    }    
 	}

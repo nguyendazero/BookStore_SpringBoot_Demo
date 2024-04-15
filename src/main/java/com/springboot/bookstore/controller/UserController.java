@@ -154,13 +154,25 @@ public class UserController {
 	@GetMapping("/manager-users")
 	public String managerUsers(Model model) {
 		List<User> users = userService.getAllUsers();
+		String error = (String) session.getAttribute("error");
+		session.setAttribute("error", null);
+		model.addAttribute("error", error);
 		model.addAttribute("users", users);
 		return "manager_users";
 	}
 	
 	@GetMapping("/users/delete/{id}")
-	public String deleteUser(@RequestParam("userId") int userId) {
-		userService.deleteUser(userId);
+	public String deleteUser(@RequestParam("userId") int userId, Model model) {
+		User userLogin = (User) session.getAttribute("userLogin");
+		if(userLogin.getUserName().equals("admin")) {
+			if(userLogin.getId() == userId) {
+				session.setAttribute("error", "Bạn không thể xóa tài khoản này");
+				return "redirect:/manager-users";
+			}
+			userService.deleteUser(userId);
+		}else {
+			session.setAttribute("error", "Bạn không được cấp quyền này");
+		}
 		return "redirect:/manager-users";
 	}
 }

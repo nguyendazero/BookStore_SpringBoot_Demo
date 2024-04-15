@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chỉnh sửa sản phẩm</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+          integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z"
+          crossorigin="anonymous">
+</head>
+<body>
+
+<div class="container mt-5">
+    <h2 class="mb-4">Chỉnh sửa sản phẩm</h2>
+    <form th:action = "@{/update-product/{id} (id=${book.id})}" method="post">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="productName">Tên sản phẩm</label>
+                    <input type="text" class="form-control" id="productName" name="productName" th:value="${book.productName}">
+                </div>
+                
+                <div class="form-group">
+                    <label for="productPriceSelling">Giá bán</label>
+                    <input type="number" class="form-control" id="productPriceSelling" name="productPriceSelling" th:value="${book.priceSelling}">
+                </div>
+                <div class="form-group">
+                    <label for="productPriceOriginal">Giá gốc</label>
+                    <input type="number" class="form-control" id="productPriceOriginal" name="productPriceOriginal" th:value="${book.priceOriginal}">
+                </div>
+                <div class="form-group">
+                    <label for="productDescription">Mô tả</label>
+                    <textarea class="form-control" id="productDescription" name="productDescription" rows="3" th:value="${book.description}"></textarea>
+                </div>
+                
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="productImage">Link hình ảnh</label>
+                    <input type="text" class="form-control" id="productImage" name="productImage" th:value="${book.image}">
+                </div>
+                <div class="form-group">
+                    <label for="productRemainQuantity">Số lượng tồn kho</label>
+                    <input type="number" class="form-control" id="productRemainQuantity" name="productRemainQuantity" th:value="${book.remainQuantity}">
+                </div>
+                <div class="form-group">
+				    <label for="productStatus">Trạng thái</label>
+				    <select class="form-control" id="productStatus" name="productStatus">
+				        <option value="đang bán" th:selected="${book.status == 'đang bán'}">đang bán</option>
+				        <option value="hết hàng" th:selected="${book.status == 'hết hàng'}">hết hàng</option>
+				        <option value="giảm giá" th:selected="${book.status == 'giảm giá'}">giảm giá</option>
+				    </select>
+				</div>
+		
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary">Lưu</button>
+        <a th:href="@{/manager-products}" class="btn btn-secondary ml-2">Hủy</a>
+
+    </form>
+</div>
+
+<!-- Bootstrap JS and dependencies -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"
+        integrity="sha384-nBpVBTK/UcvWskLcWsvDAJ0zPBwnQWZVmjpR8e2U+9wF5UZly6yUqnWh7tjgsxEr"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
+        integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shCk5KVq2+8vB7/CmNqd9+XvoKbT+IrFy+EdT"
+        crossorigin="anonymous"></script>
+</body>
+</html>
