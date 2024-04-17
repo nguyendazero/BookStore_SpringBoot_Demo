@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -173,6 +174,22 @@ public class UserController {
 		}else {
 			session.setAttribute("error", "Bạn không được cấp quyền này");
 		}
+		return "redirect:/manager-users";
+	}
+	
+	@GetMapping("/users/grant-administrative-rights/{id}")
+	public String grantAdministrativeRights(@PathVariable("id") int id) {
+		User user = userService.getUserById(id);
+		user.setRole(1);
+		userService.updateUser(user);
+		return "redirect:/manager-users";
+	}
+	
+	@GetMapping("/users/cancel-administrative-rights/{id}")
+	public String cancelAdminRights(@PathVariable("id") int id) {
+		User user = userService.getUserById(id);
+		user.setRole(0);
+		userService.updateUser(user);
 		return "redirect:/manager-users";
 	}
 }

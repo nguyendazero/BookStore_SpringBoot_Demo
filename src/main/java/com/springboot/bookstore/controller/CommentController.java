@@ -42,10 +42,10 @@ public class CommentController {
 				Comment c = new Comment(userLogin, p, comment, currentDateAsDate);
 				commentService.saveComment(c);
 			}else {
-				session.setAttribute("error", "Bạn chưa nhập nội dung!");
+				session.setAttribute("errorComment", "Bạn chưa nhập nội dung!");
 			}
 		}else {
-			session.setAttribute("errorLogin", "Bạn chưa đăng nhập!");
+			session.setAttribute("errorComment", "Bạn chưa đăng nhập!");
 		}
 		return "redirect:/product/" + id;
 	}
@@ -64,7 +64,7 @@ public class CommentController {
 				return "redirect:/product/" + comment.getIdProduct().getId();
 			}
 		}else {
-			session.setAttribute("errorLogin", "Bạn chưa đăng nhập!");
+			session.setAttribute("error", "Bạn chưa đăng nhập!");
 			return "redirect:/product/" + comment.getIdProduct().getId();
 		}
 		return "redirect:/product/" + productId;

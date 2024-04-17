@@ -147,9 +147,10 @@ header nav ul li {
 </header>
 	
 	<div class="container d">
-		
-	<h3 class="text-center" style="color: red;" th:if="${session.errorLogin != null}" th:text="${session.errorLogin}"></h3>
-	<h3 class="text-center" style="color: red;" th:if="${errorLogin != null}" th:text="${errorLogin}"></h3>
+
+	
+	<h3 class="text-center" style="color: red;" th:if="${session.error != null}" th:text="${session.error}"></h3>
+	<h3 class="text-center" style="color: red;" th:if="${error != null}" th:text="${error}"></h3>
 	
     <div class="card">
         <div class="container-fliud">
@@ -191,8 +192,11 @@ header nav ul li {
 	<!-- Phần bình luận -->
     <div class="comment-section">
         <h3 class="text-center">Bình luận</h3>
-        <p style="color: red;" th:if="${session.error != null}" th:text="${session.error}"></p>
-		<p style="color: red;" th:if="${error != null}" th:text="${error}"></p>
+        
+        <p style="color: red;" th:if="${session.errorComment != null}" th:text="${session.errorComment}"></p>
+		<p style="color: red;" th:if="${errorComment != null}" th:text="${errorComment}"></p>
+		
+
 
 		
 		

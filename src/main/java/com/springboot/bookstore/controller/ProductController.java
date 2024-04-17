@@ -46,11 +46,13 @@ public class ProductController {
 		Product p = productService.getProductById(id);
 		List<Comment> comments = commentService.getAllCommentByIdProduct(id);
 		String error = (String) session.getAttribute("error");
-		String errorLogin = (String) session.getAttribute("errorLogin");
 		session.setAttribute("error", null);
-		session.setAttribute("errorLogin", null);
 		model.addAttribute("error", error);
-		model.addAttribute("errorLogin", errorLogin);
+		
+		String errorComment = (String) session.getAttribute("errorComment");
+		session.setAttribute("errorComment", null);
+		model.addAttribute("errorComment", errorComment);
+		
 		model.addAttribute("product", p);
 		model.addAttribute("comments", comments);
 		return "product_detail";
@@ -63,7 +65,7 @@ public class ProductController {
 			Product p = productService.incLikes(id);
 			productService.updateProduct(p);
 		}else {
-			session.setAttribute("errorLogin", "Bạn chưa đăng nhập!");
+			session.setAttribute("error", "Bạn chưa đăng nhập!");
 			return "redirect:/product/" + id;
 		}
 		

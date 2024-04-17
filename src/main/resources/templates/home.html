@@ -177,6 +177,18 @@ footer p {
     margin-bottom: 10px; /* Thêm khoảng cách giữa các mục */
 }
 
+/* Thêm một lớp mới cho book để sử dụng flexbox */
+.book-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%; /* Chiều cao của book-container sẽ được căn chỉnh theo chiều cao của parent (div.book) */
+}
+
+/* Căn nút add-to-cart ở dưới cùng */
+.add-to-cart {
+    margin-top: auto; /* Đảm bảo nút luôn ở dưới cùng */
+}
 
 
 
@@ -234,6 +246,7 @@ footer p {
 			<h2 th:if="${session.error != null}" th:text="${session.error}"></h2>
 			<h2 th:if="${error != null}" th:text="${error}"></h2>
 		</div>
+	
 			
 		
 			<div class="row">
@@ -270,17 +283,20 @@ footer p {
             <div class="book-list">
 				
                 <div th:each="product : ${products}" class="book">
-                    <a th:href="@{/product/{productId}(productId=${product.id})}">
-					    <img th:src="@{/img/product/{image}(image=${product.image})}" alt="Book 1">
-					</a>
-                    <h4 th:text = "${product.productName}"></h4>
-                    <h5 style="color: green;">Tác giả: <span th:text = "${product.author.fullName}"></span></h5>
-                    <p th:if="${product.status == 'giảm giá'}" th:text="${product.priceOriginal}" style="text-decoration: line-through;"></p>
+			    <div class="book-container">
+			        <a th:href="@{/product/{productId}(productId=${product.id})}">
+			            <img th:src="@{/img/product/{image}(image=${product.image})}" alt="Book 1">
+			        </a>
+			        <h4 th:text="${product.productName}"></h4>
+			        <h5 style="color: green;">Tác giả: <span th:text="${product.author.fullName}"></span></h5>
+			        <p th:if="${product.status == 'giảm giá'}" th:text="${product.priceOriginal}" style="text-decoration: line-through;"></p>
+			        <p style="color: red;">Giá: <span th:text="${product.priceSelling}"></span></p>
+			        <a th:if="${product.status == 'hết hàng'}" class="btn">Đã hết hàng</a>
+			        <!-- Thẻ add-to-cart sẽ nằm ở dưới cùng -->
+			        <a th:if="${product.status != 'hết hàng'}" th:href="@{/add-to-cart/{productId}(productId=${product.id})}" class="btn add-to-cart">Thêm vào giỏ hàng</a>
+			    </div>
+			</div>
 
-                    <p style="color: red;">Giá: <span th:text = "${product.priceSelling}"></span></p>
-                   	<a th:if="${product.status == 'hết hàng'}" class="btn">Đã hết hàng</a>
-                    <a th:if="${product.status != 'hết hàng'}" th:href="@{/add-to-cart/{productId}(productId=${product.id})}" class="btn">Thêm vào giỏ hàng</a>
-                </div>
               
             </div>
         </section>

@@ -97,6 +97,70 @@ button[type="submit"]:hover {
     background-color: #555;
 }
 
+/* Định dạng dropdown */
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+/* Nút 3 chấm */
+.dropbtn {
+    background-color: transparent;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+/* Dropdown menu */
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+
+/* Hiển thị dropdown menu khi hover */
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+/* Định dạng các mục trong dropdown menu */
+.dropdown-content li {
+    display: block;
+}
+
+.dropdown-content form {
+    margin: 0;
+}
+
+.dropdown-content form button {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 8px 12px;
+    width: 100%;
+    text-align: left;
+}
+
+.dropdown-content a {
+    display: block;
+    padding: 8px 12px;
+    text-decoration: none;
+    color: black;
+}
+
+/* Định dạng mục trong dropdown menu khi hover */
+.dropdown-content a:hover {
+    background-color: #ddd;
+}
+
+
+
 	</style>
 </head>
 <body>
@@ -142,7 +206,7 @@ button[type="submit"]:hover {
 			            <th>Điện thoại</th>
 			            <th>Giới tính</th>
 			            <th>Vai trò</th>
-			            <th>Xóa</th>
+			            <th th:if="${session.userLogin.userName == 'admin'}">Action</th>
 			        </tr>
 			    </thead>
 			    <tbody>
@@ -157,13 +221,25 @@ button[type="submit"]:hover {
 						    <span th:if="${user.role != 0 && user.userName != 'admin'}">Quản trị viên</span>
 						    <span th:if="${user.role != 0 && user.userName == 'admin'}">Quản trị viên cao cấp</span>
 						</td>
+						
+			            <td th:if="${session.userLogin.userName == 'admin'}">
+						    <div class="dropdown">
+						        <button class="dropbtn">&#x22EE;</button>
+						        <ul class="dropdown-content">
+						            <li>
+						                <form th:action="@{/users/delete/{id} (id=${user.id})}" method="get">
+						                    <input type="hidden" name="userId" th:value="${user.id}">
+						                    <button type="submit" style="color: black;">Delete</button>
+						                </form>
+						            </li>
+						            <li th:if="${user.role == 0}"><a  th:href="@{/users/grant-administrative-rights/{id} (id=${user.id}) }">Cấp quyền quản trị</a></li>
+						            <li th:if="${user.role == 1}"><a th:href="@{/users/cancel-administrative-rights/{id} (id=${user.id}) }">Hủy quyền quản trị</a></li>
+						            <!-- Thêm các chức năng khác vào đây -->
+						        </ul>
+						    </div>
+						</td>
+
 			
-			            <td>
-						    <form th:action="@{/users/delete/{id} (id=${user.id})}" method="get">
-						        <input type="hidden" name="userId" th:value="${user.id}">
-						        <button type="submit">Delete</button>
-						    </form>
-						</td>			
         			</tr>
     			</tbody>
 			</table>
