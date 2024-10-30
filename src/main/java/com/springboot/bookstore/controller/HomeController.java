@@ -37,6 +37,11 @@ public class HomeController {
 		return "home";
 	};
 	
+	@GetMapping("/test")
+	public String test(Model model) {
+		return "test";
+	};
+	
 	@GetMapping("/home-admin")
 	public String homeAdmin(Model model) {
 		List<Product> products = productService.getAllProducts();
